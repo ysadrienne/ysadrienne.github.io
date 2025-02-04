@@ -14,6 +14,10 @@
         <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+
+
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -70,14 +74,59 @@
                     <h2 class="mb-5">Lab 1B: Bluetooth</h2>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">University of Colorado Boulder</h3>
-                            <div class="subheading mb-3">Bachelor of Science</div>
-                            <div>Computer Science - Web Development Track</div>
-                            <p>GPA: 3.23</p>
+                            <h3 class="mb-0">Task 1: ECHO command</h3>
+
+                            <div>
+                                <p></p>
+                                <p>The ECHO command sends a string to the Artemis board, in which the commputer in turn prints a modified string. <code>tx_estring_value</code> modifies the string, and <code>tx_characteristic_string</code> sends it to the computer.</p>
+                                <p><div class="code-bubble">
+                                    <pre><code class="language-cpp">
+char char_arr[MAX_MSG_SIZE];
+
+// Extract the next value from the command string as a character array
+success = robot_cmd.get_next_value(char_arr);
+if (!success)
+    return;
+                                        
+    tx_estring_value.clear();
+    tx_estring_value.append("Robot says -> ");
+    tx_estring_value.append(char_arr);
+    tx_estring_value.append(" :)");
+    tx_characteristic_string.writeValue(tx_estring_value.c_str());
+    Serial.println(tx_estring_value.c_str());
+                                         
+    break;</code></pre>
+                            </div></p>
+                            <h3 class="mb-0">Task 2: GET_THREE_FLOATS command</h3>
+
+                            <div>
+                                <p></p>
+                                <p>The ECHO command sends a string to the Artemis board, in which the commputer in turn prints a modified string. <code>tx_estring_value</code> modifies the string, and <code>tx_characteristic_string</code> sends it to the computer.</p>
+                                <pre class="code-bubble line-numbers">
+                                    <code class="language-cpp">
+                                char char_arr[MAX_MSG_SIZE];
+                                // Extract the next value from the command string as a character array
+                                success = robot_cmd.get_next_value(char_arr);
+                                if (!success)
+                                    return;
+                                
+                                tx_estring_value.clear();
+                                tx_estring_value.append("Robot says -> ");
+                                tx_estring_value.append(char_arr);
+                                tx_estring_value.append(" :)");
+                                tx_characteristic_string.writeValue(tx_estring_value.c_str());
+                                Serial.println(tx_estring_value.c_str());
+                                
+                                break;
+                                    </code>
+                                </pre>
+                                
+                            
                         </div>
-                        <div class="flex-shrink-0"><span class="text-primary">August 2006 - May 2010</span></div>
                     </div>
+
                 </div>
+                
             </section>
             <hr class="m-0" />
             <!-- Skills-->
