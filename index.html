@@ -13,10 +13,7 @@
         <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css" rel="stylesheet">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-
+        <link href="css/styles.css" rel="stylesheet" /> 
 
     </head>
     <body id="page-top">
@@ -74,52 +71,169 @@
                     <h2 class="mb-5">Lab 1B: Bluetooth</h2>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
+                            <!--Task 1-->
                             <h3 class="mb-0">Task 1: ECHO command</h3>
 
                             <div>
                                 <p></p>
-                                <p>The ECHO command sends a string to the Artemis board, in which the commputer in turn prints a modified string. <code>tx_estring_value</code> modifies the string, and <code>tx_characteristic_string</code> sends it to the computer.</p>
-                                <p><div class="code-bubble">
-                                    <pre><code class="language-cpp">
-char char_arr[MAX_MSG_SIZE];
+                                <p>The <code>ECHO</code> command sends a string to the Artemis board, in which the commputer in turn prints a modified string. <code>tx_estring_value</code> adds <code>Robot says -> </code> to the front of the string and appends a <code>:)</code> at the end of the string, and <code>tx_characteristic_string</code> sends it to the computer.</p> 
+                                <p>The following is the Arduino code: </p>
+                                <pre><code>
+case ECHO:
 
-// Extract the next value from the command string as a character array
-success = robot_cmd.get_next_value(char_arr);
-if (!success)
-    return;
-                                        
+    char char_arr[MAX_MSG_SIZE];
+                        
+    // Extract the next value from the command string as a character array
+    success = robot_cmd.get_next_value(char_arr);
+    if (!success)
+        return;
     tx_estring_value.clear();
     tx_estring_value.append("Robot says -> ");
     tx_estring_value.append(char_arr);
     tx_estring_value.append(" :)");
     tx_characteristic_string.writeValue(tx_estring_value.c_str());
     Serial.println(tx_estring_value.c_str());
-                                         
+                                     
     break;</code></pre>
-                            </div></p>
-                            <h3 class="mb-0">Task 2: GET_THREE_FLOATS command</h3>
+                            <p>The following is the Python output when the string <code>"Hi"</code> is sent to the board: 
+                                <p><img src="assets/img/lab1b/echo.jpg" alt="..."></p> 
+                            </p>
+                            <p></p>
 
+                            <!--Task 2-->
+                            <h3 class="mb-0">Task 2: SEND_THREE_FLOATS command</h3>
                             <div>
                                 <p></p>
-                                <p>The ECHO command sends a string to the Artemis board, in which the commputer in turn prints a modified string. <code>tx_estring_value</code> modifies the string, and <code>tx_characteristic_string</code> sends it to the computer.</p>
-                                <pre class="code-bubble line-numbers">
-                                    <code class="language-cpp">
-                                char char_arr[MAX_MSG_SIZE];
-                                // Extract the next value from the command string as a character array
-                                success = robot_cmd.get_next_value(char_arr);
-                                if (!success)
-                                    return;
+                                <p>The <code>SEND_THREE_FLOATS</code> command sends three floats to the Artemis board, in which the commputer in turn extracts and prints the floats. Like the <code>ECHO</code> command, <code>tx_estring_value</code> modifies the string by appending the floats, and <code>tx_characteristic_string</code> sends it to the computer. The following is the Arduino code: </p>
+                                <p><pre><code>
+case SEND_THREE_FLOATS:
+    float float_a, float_b, float_c;
+                        
+    // Extract the next value from the command string as a float
+    success = robot_cmd.get_next_value(float_a);
+    if (!success)
+        return;
+                        
+    // Extract the next value from the command string a float
+    success = robot_cmd.get_next_value(float_b);
+    if (!success)
+        return;
+                        
+    // Extract the next value from the command string a float
+    success = robot_cmd.get_next_value(float_c);
+    if (!success)
+        return;
+                        
+    tx_estring_value.clear();
+    tx_estring_value.append("Three Floats: ");
+    tx_estring_value.append((float)float_a);
+    tx_estring_value.append(", ");
+    tx_estring_value.append((float)float_b);
+    tx_estring_value.append(", ");
+    tx_estring_value.append((float)float_c);
+    tx_characteristic_string.writeValue(tx_estring_value.c_str());
+                        
+    Serial.println(tx_estring_value.c_str());
+                                     
+    break;</code></pre>
+                                <p>The following is the Python output when floats <code>2.0|-6.0|0.5</code> are sent to the board: 
+                                <p><img src="assets/img/lab1b/floats.jpg" alt="..."></p> 
+                                </p>
+                                <p></p>
+
+                                <!--Task 3-->
+                                <h3 class="mb-0">Task 3: GET_TIME_MILLIS command</h3>
+                                <div>
+                                    <p></p>
+                                    <p>The <code>GET_TIME_MILLIS</code> command sends three floats to the Artemis board, in which the commputer in turn extracts and prints the floats. Like the <code>ECHO</code> command, <code>tx_estring_value</code> modifies the string by appending the floats, and <code>tx_characteristic_string</code> sends it to the computer. The following is the Arduino code: </p>
+                                    <p><pre><code>
+case GET_TIME_MILLIS:
+
+    float time;
+                            
+    time = millis();
+    tx_estring_value.clear();
+    tx_estring_value.append("T: ");
+    tx_estring_value.append((float) time);
+    tx_characteristic_string.writeValue(tx_estring_value.c_str());
+                            
+    Serial.print("T: ");
+    Serial.println(time);
+                            
+    break;</code></pre>
+                                    <p>The following is the Python output when floats <code>2.0|-6.0|0.5</code> are sent to the board: 
+                                    <p><img src="assets/img/lab1b/time.jpg" alt="..."></p> 
+                                    </p>
+                                    <p></p>
+
+                                    <!--Task 4-->
+                                    <h3 class="mb-0">Task 4: Setting Up Notification Handler</h3>
+                                    <div>
+                                        <p></p>
+                                        <p>The <code>GET_TIME_MILLIS</code> command sends three floats to the Artemis board, in which the commputer in turn extracts and prints the floats. Like the <code>ECHO</code> command, <code>tx_estring_value</code> modifies the string by appending the floats, and <code>tx_characteristic_string</code> sends it to the computer. The following is the Arduino code: </p>
+                                        <p><pre><code>
+    case GET_TIME_MILLIS:
+    
+        float time;
                                 
-                                tx_estring_value.clear();
-                                tx_estring_value.append("Robot says -> ");
-                                tx_estring_value.append(char_arr);
-                                tx_estring_value.append(" :)");
-                                tx_characteristic_string.writeValue(tx_estring_value.c_str());
-                                Serial.println(tx_estring_value.c_str());
+        time = millis();
+        tx_estring_value.clear();
+        tx_estring_value.append("T: ");
+        tx_estring_value.append((float) time);
+        tx_characteristic_string.writeValue(tx_estring_value.c_str());
                                 
-                                break;
-                                    </code>
-                                </pre>
+        Serial.print("T: ");
+        Serial.println(time);
+                                
+        break;</code></pre>
+                                        <p>The following is the output in the serial monitor: 
+                                        <p><img src="assets/img/lab1b/handlersm.jpg" alt="..."></p> 
+                                        </p>
+                                        <p>while the following is the Python output that shows the same time, verifying correct data transmission: 
+                                        <p><img src="assets/img/lab1b/handlerpy.jpg" alt="..."></p> 
+                                        </p>
+                                        <p></p>
+
+                                    <!--Task 5-->
+                                    <h3 class="mb-0">Task 5: Loop to Get Current Time</h3>
+                                    <div>
+                                        <p></p>
+                                        <p>The <code>GET_TIME_MILLIS</code> command sends three floats to the Artemis board, in which the commputer in turn extracts and prints the floats. Like the <code>ECHO</code> command, <code>tx_estring_value</code> modifies the string by appending the floats, and <code>tx_characteristic_string</code> sends it to the computer. The following is the Arduino code: </p>
+                                        <p><pre><code>
+    case GET_TIME_MILLIS:
+    
+        float time;
+                                
+        time = millis();
+        tx_estring_value.clear();
+        tx_estring_value.append("T: ");
+        tx_estring_value.append((float) time);
+        tx_characteristic_string.writeValue(tx_estring_value.c_str());
+                                
+        Serial.print("T: ");
+        Serial.println(time);
+                                
+        break;</code></pre>
+                                        <p>The following is the last few lines of output in the serial monitor, where 568 datapoints were taken: 
+                                        <p><img src="assets/img/lab1b/loopsm.jpg" alt="..."></p> 
+                                        </p>
+                                        <p>On Python, I printed the number of datapoints from the loop to verify correct data transmission, as printing all datapoints would take up too much space. 
+                                        <p><img src="assets/img/lab1b/looppy.jpg" alt="..."></p> 
+                                        </p>
+                                        <p></p>
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                                    </p>
+                            <p></p>
+                                
                                 
                             
                         </div>
@@ -129,102 +243,8 @@ if (!success)
                 
             </section>
             <hr class="m-0" />
-            <!-- Skills-->
-            <section class="resume-section" id="skills">
-                <div class="resume-section-content">
-                    <h2 class="mb-5">Skills</h2>
-                    <div class="subheading mb-3">Programming Languages & Tools</div>
-                    <ul class="list-inline dev-icons">
-                        <li class="list-inline-item"><i class="fab fa-html5"></i></li>
-                        <li class="list-inline-item"><i class="fab fa-css3-alt"></i></li>
-                        <li class="list-inline-item"><i class="fab fa-js-square"></i></li>
-                        <li class="list-inline-item"><i class="fab fa-angular"></i></li>
-                        <li class="list-inline-item"><i class="fab fa-react"></i></li>
-                        <li class="list-inline-item"><i class="fab fa-node-js"></i></li>
-                        <li class="list-inline-item"><i class="fab fa-sass"></i></li>
-                        <li class="list-inline-item"><i class="fab fa-less"></i></li>
-                        <li class="list-inline-item"><i class="fab fa-wordpress"></i></li>
-                        <li class="list-inline-item"><i class="fab fa-gulp"></i></li>
-                        <li class="list-inline-item"><i class="fab fa-grunt"></i></li>
-                        <li class="list-inline-item"><i class="fab fa-npm"></i></li>
-                    </ul>
-                    <div class="subheading mb-3">Workflow</div>
-                    <ul class="fa-ul mb-0">
-                        <li>
-                            <span class="fa-li"><i class="fas fa-check"></i></span>
-                            Mobile-First, Responsive Design
-                        </li>
-                        <li>
-                            <span class="fa-li"><i class="fas fa-check"></i></span>
-                            Cross Browser Testing & Debugging
-                        </li>
-                        <li>
-                            <span class="fa-li"><i class="fas fa-check"></i></span>
-                            Cross Functional Teams
-                        </li>
-                        <li>
-                            <span class="fa-li"><i class="fas fa-check"></i></span>
-                            Agile Development & Scrum
-                        </li>
-                    </ul>
-                </div>
-            </section>
-            <hr class="m-0" />
-            <!-- Interests-->
-            <section class="resume-section" id="interests">
-                <div class="resume-section-content">
-                    <h2 class="mb-5">Interests</h2>
-                    <p>Apart from being a web developer, I enjoy most of my time being outdoors. In the winter, I am an avid skier and novice ice climber. During the warmer months here in Colorado, I enjoy mountain biking, free climbing, and kayaking.</p>
-                    <p class="mb-0">When forced indoors, I follow a number of sci-fi and fantasy genre movies and television shows, I am an aspiring chef, and I spend a large amount of my free time exploring the latest technology advancements in the front-end web development world.</p>
-                </div>
-            </section>
-            <hr class="m-0" />
-            <!-- Awards-->
-            <section class="resume-section" id="awards">
-                <div class="resume-section-content">
-                    <h2 class="mb-5">Awards & Certifications</h2>
-                    <ul class="fa-ul mb-0">
-                        <li>
-                            <span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>
-                            Google Analytics Certified Developer
-                        </li>
-                        <li>
-                            <span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>
-                            Mobile Web Specialist - Google Certification
-                        </li>
-                        <li>
-                            <span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>
-                            1
-                            <sup>st</sup>
-                            Place - University of Colorado Boulder - Emerging Tech Competition 2009
-                        </li>
-                        <li>
-                            <span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>
-                            1
-                            <sup>st</sup>
-                            Place - University of Colorado Boulder - Adobe Creative Jam 2008 (UI Design Category)
-                        </li>
-                        <li>
-                            <span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>
-                            2
-                            <sup>nd</sup>
-                            Place - University of Colorado Boulder - Emerging Tech Competition 2008
-                        </li>
-                        <li>
-                            <span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>
-                            1
-                            <sup>st</sup>
-                            Place - James Buchanan High School - Hackathon 2006
-                        </li>
-                        <li>
-                            <span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>
-                            3
-                            <sup>rd</sup>
-                            Place - James Buchanan High School - Hackathon 2005
-                        </li>
-                    </ul>
-                </div>
-            </section>
+            
+            
         </div>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
