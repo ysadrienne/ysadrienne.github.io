@@ -152,9 +152,10 @@
                             <p>After completing these steps, I could see the connection was successful.</p>
                             
                             <!--Codebase-->
-                            <p></p>
                             <h3 class="mb-0">Codebase</h3>
-                            <p>Writeup</p>
+                            <p></p>
+                            <p>My computer connects to the Artemis Nano through bluetooth. The Artemis Nano listens to the <i>ble_arduino.ino</i> file, which can send commands in the <code>RobotCommand</code> class for the board to execute.
+                                I can read data and send commands to the board using <i>demo.ipynb</i>. </p>
 
                             <!--Task 1-->
                             <h3 class="mb-0">Task 1: ECHO command</h3>
@@ -271,15 +272,27 @@
                             <!--Task 8-->
                             <h3 class="mb-0">Task 8: Difference Between Methods</h3>
                             <p></p>
-                            <p>Discuss the differences between these two methods, the advantages and disadvantages of both and the potential scenarios that you might choose one method over the other. 
-                                How “quickly” can the second method record data? The Artemis board has 384 kB of RAM. 
-                                Approximately how much data can you store to send without running out of memory?</p>
-                            
+                            <p>The method used in Task 5 is a continuous loop where data is collected and transmitted straight to the computer. 
+                                The advantage of this loop method is that the data does not need to be stored in the microcontroller as it is continuosly sent to the computer. 
+                                However, as data collection happens at a much faster rate than transmission, the tranmission rate limits how much data can be transmitted in a set period of time.</p>
+                            <p>The method used in Tasks 6 and 7 utilizes an array to store all the data collected, then transmits the bulk data.
+                                The advantage of this array method is that data transmission rate is not a problem, since all data is stored and is transmitted only once.
+                                This means the data takes up space on the microcontroller until transmitted to the computer.</p>
+                            <p>Due to this difference, both have uses for different scenarios. The loop method would be more useful in an environment where real-time data is needed, 
+                                because the data recorded does not have to wait until being transmitted, making it more representative of the current state therefore leaving more room for feedback.
+                                The array method would be more useful in scenarios where high-frequency sensors are used or real-time data isn't necessary, due to its ability to record data quickly.</p>
+                            <p>My array method for task 6 recorded 1000 messages in 18 milliseconds. If rate remains constant, this means approximately 55,555 messages can be recorded per second.</p>
+                            <p>The Artemis board has 384 kB of RAM. Assuming only the timestamp (6 digit float, 4 bytes)is recorded and all 384 kB is used purely for storing data, 
+                                the RAM can store up to 96,000 floats.</p>
+                
                             <!--Discussion-->
                             <h3 class="mb-0">Discussion</h3>
                             <p></p>
-                            <p>This lab was a great exercise for me -- as a mechanical engineer with minimal coding background, it was a good level of difficulty to start with.
-                                </p>
+                            <p>This lab was a great exercise for me -- as a mechanical engineer with minimal coding background, it provided an appropriate level of difficulty to start with exposing me to basic syntax.
+                                I learned how to use BLE to transfer data to a microcontroller which should be very useful for communication between the robot and my computer.
+                                Switching between Jupyter Notebook and IDE was a bit confusing, but as I progressed through the lab tasks - which guided me through creating commands for the board to execute 
+                                in response to computer requests and processing data using a notification handler — I gained a better understanding of how to use the notebook 
+                                and the interactions between the microcontroller and the computer.</p>
                             <p>It was also my first time using GitHub and HTML to create a website. Formatting was a bit tricky in the beginning,
                                 but now I am quite satisfied with how I structured my HTML file and the presentation of my website (mostly thanks to the template). I feel more confident about adding future writeups!</p>
 
