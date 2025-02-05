@@ -6,7 +6,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Adrienne Yoon MAE 4190: Fast Robots</title>
-        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="assets/img/misc/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -20,8 +20,8 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
             <a class="navbar-brand js-scroll-trigger" href="#page-top">
-                <span class="d-block d-lg-none">Clarence Taylor</span>
-                <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="assets/img/profile.jpg" alt="..." /></span>
+                <span class="d-block d-lg-none">Adrienne Yoon</span>
+                <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="assets/img/misc/profile.jpg" alt="..." /></span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -29,6 +29,7 @@
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab1a">Lab 1A:<br>Artemis</br></a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab1b">Lab 1B:<br>Bluetooth</br></a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab2">Lab 2:<br>IMU</br></a></li>
                 </ul>
             </div>
         </nav>
@@ -45,7 +46,9 @@
                         MAE 4190 Fast Robots ·
                         <a href="yay8@cornell.edu">yay8@cornell.edu</a>
                     </div>
-                    <p class="lead mb-5">Hi! I am a senior in Mechanical Engineering interested in Robotics. I do research in Professor Cara Nunez's HAPPI Lab, and also have been a part of Cornell Electric Vehicles since freshman year. I like playing the guitar and listening to the same music over an over again! 
+                    <p class="lead mb-5">Hi! I am a senior in Mechanical Engineering interested in Robotics. 
+                        I do research in Professor Cara Nunez's HAPPI Lab, and also have been a part of Cornell Electric Vehicles since freshman year. 
+                        I like playing the guitar and listening to the same music over an over again! 
                         <br><i>Current no. 1 repeat on Spotify: Strong Girl by Niki</i></br> </p>
                 </div>
             </section>
@@ -53,197 +56,230 @@
             <!--Lab 1A-->
             <section class="resume-section" id="lab1a">
                 <div class="resume-section-content">
-                    <h2 class="mb-5">Lab 1A: Artemis</h2>
+                    <h2 class="mb-5">Lab 1A: Artemis Prelab</h2>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">Senior Web Developer</h3>
-                            <div class="subheading mb-3">Intelitec Solutions</div>
-                            <p>Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.</p>
+
+                            <!--Prelab-->
+                            <h3 class="mb-0">Prelab</h3>
+                            <p>Writeup</p>
+
+                            <!--Task 1-->
+                            <h3 class="mb-0">Task 1: Setup</h3>
+                            <p>Writeup</p>
+
+                            <!--Task 2-->
+                            <h3 class="mb-0">Task 2: Blink</h3>
+                            <p>Writeup</p>
+
+                            <!--Task 3-->
+                            <h3 class="mb-0">Task 3: Serial Monitor</h3>
+                            <p>Writeup</p>
+
+                            <!--Task 4-->
+                            <h3 class="mb-0">Task 4: Temperature Data</h3>
+                            <p>Writeup</p>
+
+                            <!--Task 5-->
+                            <h3 class="mb-0">Task 5: Microphone Output</h3>
+                            <p>Writeup</p>
+
+                            <!--Discussion-->
+                            <h3 class="mb-0">Discussion</h3>
+                            <p></p>
+                            <p>The </p>
                         </div>
-                        <div class="flex-shrink-0"><span class="text-primary">March 2013 - Present</span></div>
                     </div>
                 </div>
             </section>
             <hr class="m-0" />
+            
             <!--Lab 1B-->
             <section class="resume-section" id="lab1b">
                 <div class="resume-section-content">
                     <h2 class="mb-5">Lab 1B: Bluetooth</h2>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
+
+                            <!--Prelab-->
+                            <h3 class="mb-0">Prelab</h3>
+                            <p>Before starting the tasks, I installed Bleak on my computer, as I was getting pip errors. 
+                                After troubleshooting by restarting the Jupyter notebook, correcting directories, and reinstalling the codebase,
+                                I reset the environment with the correct packages. I also had to grant Bluetooth access to IDE on my computer for the board to connect successfully.</p>
+                            <p>For setting up the virtual environment named <i>FastRobots_ble</i>, I used the following commands provided:</p>
+                            <p><pre><code>
+                            python3 -m pip install --user virtualenv
+                            python3 -m venv FastRobots_ble
+                            </code></pre></p>
+                            <p>Then, I created a folder '4190' to keep all my codes and environments for the class, and activated the BLE virtual environment by sourcing it.</p>
+                            <p>To establish a bluetooth connection with my computer, I updated the Artemis MAC address. 
+                                I connected my board, to the Arduino BLE and used <i>ble_arduino.ino</i> to print the MAC address to my serial monitor:</p>
+                            <p><pre><code>
+                            Advertising BLE with MAC: c0:81:19:26:a9:64
+                            Connected to: 3c:6:30:b:ac:c1</code></pre></p>
+                            <p>I then generated a UUID unique to my computer for secure connection, using the code provided in <i>demo.ipynb</i>:</p>
+                            <p><pre><code>
+                            from uuid import uuid4
+                            uuid4()
+                            </code></pre></p>
+                            <p>Lastly, I replaced the placeholders in the <i>connections.yaml</i> file with my MAC address and the UUID generated:</p>
+                            <p><pre><code>
+                            artemis_address: 'c0:81:19:26:a9:64'
+
+                            ble_service: '2af9d444-52aa-4982-9222-fe8a1abfbced'
+
+                            characteristics:
+                            TX_CMD_STRING: '9750f60b-9c9c-4158-b620-02ec9521cd99'
+
+                            RX_FLOAT: '27616294-3063-4ecc-b60b-3470ddef2938'
+                            RX_STRING: 'f235a225-6735-4d73-94cb-ee5dfce9ba83'
+                            </code></pre></p>
+                            <p>After completing these steps, I could see the connection was successful.</p>
+                            
+                            <!--Codebase-->
+                            <h3 class="mb-0">Codebase</h3>
+                            <p>Writeup</p>
+
                             <!--Task 1-->
                             <h3 class="mb-0">Task 1: ECHO command</h3>
-
-                            <div>
-                                <p></p>
-                                <p>The <code>ECHO</code> command sends a string to the Artemis board, in which the commputer in turn prints a modified string. <code>tx_estring_value</code> adds <code>Robot says -> </code> to the front of the string and appends a <code>:)</code> at the end of the string, and <code>tx_characteristic_string</code> sends it to the computer.</p> 
-                                <p>The following is the Arduino code: </p>
-                                <pre><code>
-case ECHO:
-
-    char char_arr[MAX_MSG_SIZE];
-                        
-    // Extract the next value from the command string as a character array
-    success = robot_cmd.get_next_value(char_arr);
-    if (!success)
-        return;
-    tx_estring_value.clear();
-    tx_estring_value.append("Robot says -> ");
-    tx_estring_value.append(char_arr);
-    tx_estring_value.append(" :)");
-    tx_characteristic_string.writeValue(tx_estring_value.c_str());
-    Serial.println(tx_estring_value.c_str());
-                                     
-    break;</code></pre>
-                            <p>The following is the Python output when the string <code>"Hi"</code> is sent to the board: 
-                                <p><img src="assets/img/lab1b/echo.jpg" alt="..."></p> 
-                            </p>
                             <p></p>
+                            <p>The <code>ECHO</code> command sends a string from the computer to the Artemis board, which the computer then modifies and sends back. 
+                                <code>tx_estring_value</code> adds <code>Robot says -> </code> to the front of the string and appends a 
+                                <code>:)</code> at the end of the string, and <code>tx_characteristic_string</code> sends it to the computer.</p> 
+                            
+                            <p>The following is the Arduino code: </p>
+                            <script src="https://gist.github.com/ysadrienne/2d53057a4f309e8e304d0cde86c476b6.js"></script>
+
+                            <p>The following is the Python output when the string <code>"Hi"</code> is sent to the board: </p>
+                            <p><img src="assets/img/lab1b/echo.jpg" alt="..." class="center"></p>
 
                             <!--Task 2-->
                             <h3 class="mb-0">Task 2: SEND_THREE_FLOATS command</h3>
-                            <div>
-                                <p></p>
-                                <p>The <code>SEND_THREE_FLOATS</code> command sends three floats to the Artemis board, in which the commputer in turn extracts and prints the floats. Like the <code>ECHO</code> command, <code>tx_estring_value</code> modifies the string by appending the floats, and <code>tx_characteristic_string</code> sends it to the computer. The following is the Arduino code: </p>
-                                <p><pre><code>
-case SEND_THREE_FLOATS:
-    float float_a, float_b, float_c;
-                        
-    // Extract the next value from the command string as a float
-    success = robot_cmd.get_next_value(float_a);
-    if (!success)
-        return;
-                        
-    // Extract the next value from the command string a float
-    success = robot_cmd.get_next_value(float_b);
-    if (!success)
-        return;
-                        
-    // Extract the next value from the command string a float
-    success = robot_cmd.get_next_value(float_c);
-    if (!success)
-        return;
-                        
-    tx_estring_value.clear();
-    tx_estring_value.append("Three Floats: ");
-    tx_estring_value.append((float)float_a);
-    tx_estring_value.append(", ");
-    tx_estring_value.append((float)float_b);
-    tx_estring_value.append(", ");
-    tx_estring_value.append((float)float_c);
-    tx_characteristic_string.writeValue(tx_estring_value.c_str());
-                        
-    Serial.println(tx_estring_value.c_str());
-                                     
-    break;</code></pre>
-                                <p>The following is the Python output when floats <code>2.0|-6.0|0.5</code> are sent to the board: 
-                                <p><img src="assets/img/lab1b/floats.jpg" alt="..."></p> 
-                                </p>
-                                <p></p>
-
-                                <!--Task 3-->
-                                <h3 class="mb-0">Task 3: GET_TIME_MILLIS command</h3>
-                                <div>
-                                    <p></p>
-                                    <p>The <code>GET_TIME_MILLIS</code> command sends three floats to the Artemis board, in which the commputer in turn extracts and prints the floats. Like the <code>ECHO</code> command, <code>tx_estring_value</code> modifies the string by appending the floats, and <code>tx_characteristic_string</code> sends it to the computer. The following is the Arduino code: </p>
-                                    <p><pre><code>
-case GET_TIME_MILLIS:
-
-    float time;
-                            
-    time = millis();
-    tx_estring_value.clear();
-    tx_estring_value.append("T: ");
-    tx_estring_value.append((float) time);
-    tx_characteristic_string.writeValue(tx_estring_value.c_str());
-                            
-    Serial.print("T: ");
-    Serial.println(time);
-                            
-    break;</code></pre>
-                                    <p>The following is the Python output when floats <code>2.0|-6.0|0.5</code> are sent to the board: 
-                                    <p><img src="assets/img/lab1b/time.jpg" alt="..."></p> 
-                                    </p>
-                                    <p></p>
-
-                                    <!--Task 4-->
-                                    <h3 class="mb-0">Task 4: Setting Up Notification Handler</h3>
-                                    <div>
-                                        <p></p>
-                                        <p>The <code>GET_TIME_MILLIS</code> command sends three floats to the Artemis board, in which the commputer in turn extracts and prints the floats. Like the <code>ECHO</code> command, <code>tx_estring_value</code> modifies the string by appending the floats, and <code>tx_characteristic_string</code> sends it to the computer. The following is the Arduino code: </p>
-                                        <p><pre><code>
-    case GET_TIME_MILLIS:
-    
-        float time;
-                                
-        time = millis();
-        tx_estring_value.clear();
-        tx_estring_value.append("T: ");
-        tx_estring_value.append((float) time);
-        tx_characteristic_string.writeValue(tx_estring_value.c_str());
-                                
-        Serial.print("T: ");
-        Serial.println(time);
-                                
-        break;</code></pre>
-                                        <p>The following is the output in the serial monitor: 
-                                        <p><img src="assets/img/lab1b/handlersm.jpg" alt="..."></p> 
-                                        </p>
-                                        <p>while the following is the Python output that shows the same time, verifying correct data transmission: 
-                                        <p><img src="assets/img/lab1b/handlerpy.jpg" alt="..."></p> 
-                                        </p>
-                                        <p></p>
-
-                                    <!--Task 5-->
-                                    <h3 class="mb-0">Task 5: Loop to Get Current Time</h3>
-                                    <div>
-                                        <p></p>
-                                        <p>The <code>GET_TIME_MILLIS</code> command sends three floats to the Artemis board, in which the commputer in turn extracts and prints the floats. Like the <code>ECHO</code> command, <code>tx_estring_value</code> modifies the string by appending the floats, and <code>tx_characteristic_string</code> sends it to the computer. The following is the Arduino code: </p>
-                                        <p><pre><code>
-    case GET_TIME_MILLIS:
-    
-        float time;
-                                
-        time = millis();
-        tx_estring_value.clear();
-        tx_estring_value.append("T: ");
-        tx_estring_value.append((float) time);
-        tx_characteristic_string.writeValue(tx_estring_value.c_str());
-                                
-        Serial.print("T: ");
-        Serial.println(time);
-                                
-        break;</code></pre>
-                                        <p>The following is the last few lines of output in the serial monitor, where 568 datapoints were taken: 
-                                        <p><img src="assets/img/lab1b/loopsm.jpg" alt="..."></p> 
-                                        </p>
-                                        <p>On Python, I printed the number of datapoints from the loop to verify correct data transmission, as printing all datapoints would take up too much space. 
-                                        <p><img src="assets/img/lab1b/looppy.jpg" alt="..."></p> 
-                                        </p>
-                                        <p></p>
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                                    </p>
                             <p></p>
+                            <p>The <code>SEND_THREE_FLOATS</code> command sends three floats to the Artemis board, which the computer extracts and sends back. 
+                                Like the <code>ECHO</code> command, <code>tx_estring_value</code> modifies the string by appending the floats, and <code>tx_characteristic_string</code> sends it to the computer.</p> 
                                 
-                                
+                            <p>The following is the Arduino code: </p>
+                            <script src="https://gist.github.com/ysadrienne/a1242fe63bff4bca3d6098ecd1961667.js"></script>
+                        
+                            <p>The following is the Python output when floats <code>2.0|-6.0|0.5</code> are sent to the board: </p>
+                            <p><img src="assets/img/lab1b/floats.jpg" alt="..." class="center"></p> 
+
+                            <!--Task 3-->
+                            <h3 class="mb-0">Task 3: GET_TIME_MILLIS command</h3>
+                            <p></p>
+                            <p>The <code>GET_TIME_MILLIS</code> command fetches a timestamp of how much time has elapsed since the board was connected, in milliseconds, then creates a string to print containing the information.  
+                               the computer then prints. </p>
+                            <p>Since this was a new command, after adding the command to the switch-case chain, I made sure to add it to <i>cmd_types.py</i> and <code>enum CommandTypes</code>. 
+                                For the two commands above (<code>ECHO</code> and <code>SEND_THREE_FLOATS</code>), this was unnecessary as they already existed in the file.</p>
+
+                            <p>The following is the Arduino code, in which the timestamp is appended to a string <code>'T: '</code></p>
+                            <script src="https://gist.github.com/ysadrienne/97627987be0ed39c09258e85adcdab11.js"></script>
+
+                            <p>The following is the output printed to the serial monitor when the command is executed: </p> 
+                            <p><img src="assets/img/lab1b/time.jpg" alt="..." class="center"></p> 
+                            <p>The following is the Python output after execution, and we can see that the two numbers match, verifying successful transmission. </p> 
+                            <p><img src="assets/img/lab1b/time.jpg" alt="..." class="center"></p> 
+
+                            <!--Task 4-->
+                            <h3 class="mb-0">Task 4: Setting Up Notification Handler</h3>
+                            <p></p>
+                            <p>To setup a notification handler, I referenced the Member Function table in the <i>demo.ipynb</i> file. </p>
+
+                            <p>The following shows the Python code for the notification handler and an output of the timestamp extracted. 
+                                It is printed as an array of 1 element, since I appended the string to an empty array called <code>times</code>. </p> 
+                            <p><img src="assets/img/lab1b/handlerpy.jpg" alt="..." class="center"></p> 
+
+                            <p>The serial monitor printed out the same timestamp, verifying successful transmission. </p>
+                            <p><img src="assets/img/lab1b/handlersm.jpg" alt="..." class="center"></p>
+                            <p>There was no new Arduino code, as all we are doing is receiving the string created by the <code>GET_TIME_MILLIS</code> command.</p>
+
+                            <!--Task 5-->
+                            <h3 class="mb-0">Task 5: Loop to Get Current Time</h3>
+                            <p></p>
+                            <p>In the <code>CURRENT_TIME_LOOP</code> command, I used a <code>for</code> loop to retrieve multiple timestamps to be sent to my computer and received by the notification handler.
+                                I defined local variables <code>currentTime</code> and <code>startTime</code> to loop for 5000 milliseconds, and <code>timeCount</code> in order to track each timestamp to monitor how many were sent.
+                                </p>
                             
+                            <p>The following is the Arduino code: </p>
+                            <script src="https://gist.github.com/ysadrienne/fd3b3fe269e1f975d3ce6a92728cdeb1.js"></script>
+
+                            <p>The following is the last few lines of output in the serial monitor showing 568 datapoints: </p>
+                            <p><img src="assets/img/lab1b/loopsm.jpg" alt="..." class="center"></p> 
+                            
+                            <p>On Python, I printed the number of datapoints from the loop to verify correct data transmission, as printing all datapoints would take up too much space. </p>
+                            <p><img src="assets/img/lab1b/looppy.jpg" alt="..." class="center"></p> 
+
+                            <p>568 messages were sent over 5 seconds, and the effective data transfer rate calculated is around 113.6 messages per second. 
+                                One thing I did not consider when writing code for this is the size of each message -- There were 10 of 18 byte messages (single digit <code>timeCount</code>), 
+                                89 of 19 byte messages (double digit <code>timeCount</code>), and 469 of 20 byte messages (triple digit <code>timeCount</code>) meaning the actual rate would be slightly different.</p>
+
+                            <!--Task 6-->
+                            <h3 class="mb-0">Task 6: Setting Up Time Array</h3>
+                            <p></p>
+                            <p>The <code>SEND_TIME_DATA</code> creates an array that stores all the timestamps collected  sends three floats to the Artemis board, in which the commputer in 
+                                turn extracts and prints the floats. Like the <code>ECHO</code> command, <code>tx_estring_value</code> modifies the string by appending the floats, and <code>tx_characteristic_string</code> sends it to the computer. </p>
+                            
+                            <p>The following is the Arduino code: </p>
+                            <script src="https://gist.github.com/ysadrienne/429347d53cc92ba9e6d6afd88117c2ac.js"></script>
+
+                            <p>The following is the last few lines of output in the serial monitor, where 568 datapoints were taken: </p>
+                            <p><img src="assets/img/lab1b/arraysm.jpg" alt="..." class="center"></p> 
+                                
+                            <p>On Python, I printed the number of datapoints from the loop to verify correct data transmission, as printing all datapoints would take up too much space. </p> 
+                            <p><img src="assets/img/lab1b/arraypy.jpg" alt="..." class="center"></p> 
+                            
+                            <!--Task 7-->
+                            <h3 class="mb-0">Task 7: Setting Up Temperature Array with Time</h3>
+                            <p></p>
+                            <p>The <code>GET_TIME_MILLIS</code> command sends three floats to the Artemis board, in which the commputer in turn extracts 
+                                and prints the floats. Like the <code>ECHO</code> command, <code>tx_estring_value</code> modifies the string by appending the floats,
+                                 and <code>tx_characteristic_string</code> sends it to the computer. </p>
+                                 
+                            <p>The following is the Arduino code: </p>
+                            <script src="https://gist.github.com/ysadrienne/470e20de55b95c75f6fb12c8c6745c0f.js"></script>
+
+                            <p>The following is the last few lines of output in the serial monitor, where 568 datapoints were taken: </p>
+                            <p><img src="assets/img/lab1b/temsm.jpg" alt="..." class="center"></p> 
+                                
+                            <p>On Python, I printed the number of datapoints from the loop to verify correct data transmission, as printing all datapoints would take up too much space. </p>
+                            <p><img src="assets/img/lab1b/tempy.jpg" alt="..." class="center"></p>                         
+                            
+                            <!--Task 8-->
+                            <h3 class="mb-0">Task 8: Difference Between Methods</h3>
+                            <p></p>
+                            <p>The <code>GET_TIME_MILLIS</code> command sends three floats to the Artemis board, in which the commputer in turn extracts and prints the floats. 
+                                Like the <code>ECHO</code> command, <code>tx_estring_value</code> modifies the string by appending the floats, 
+                                and <code>tx_characteristic_string</code> sends it to the computer. The following is the Arduino code: </p>
+                            
+                            <!--Discussion-->
+                            <h3 class="mb-0">Discussion</h3>
+                            <p></p>
+                            <p>The </p>
+
+                            <!--References-->
+                            <h3 class="mb-0">References</h3>
+                            <p></p>
+                            <p>The </p>
                         </div>
                     </div>
-
                 </div>
-                
             </section>
             <hr class="m-0" />
-            
+
+            <!--Lab 2-->
+            <section class="resume-section" id="lab2">
+                <div class="resume-section-content">
+                    <h2 class="mb-5">Lab 2: IMU</h2>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Task 1: </h3>
+                            <p>Writeup</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <hr class="m-0" />            
             
         </div>
         <!-- Bootstrap core JS-->
