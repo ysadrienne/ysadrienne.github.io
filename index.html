@@ -163,10 +163,8 @@
                             <p>The <code>ECHO</code> command sends a string from the computer to the Artemis board, which the computer then modifies and sends back. 
                                 <code>tx_estring_value</code> adds <code>Robot says -> </code> to the front of the string and appends a 
                                 <code>:)</code> at the end of the string, and <code>tx_characteristic_string</code> sends it to the computer.</p> 
-                            
                             <p>The following is the Arduino code: </p>
                             <script src="https://gist.github.com/ysadrienne/2d53057a4f309e8e304d0cde86c476b6.js"></script>
-
                             <p>The following is the Python output when the string <code>"Hi"</code> is sent to the board: </p>
                             <p><img src="assets/img/lab1b/echo.jpg" alt="..." class="center"></p>
 
@@ -175,10 +173,8 @@
                             <p></p>
                             <p>The <code>SEND_THREE_FLOATS</code> command sends three floats to the Artemis board, which the computer extracts and sends back. 
                                 Like the <code>ECHO</code> command, <code>tx_estring_value</code> modifies the string by appending the floats, and <code>tx_characteristic_string</code> sends it to the computer.</p> 
-                                
                             <p>The following is the Arduino code: </p>
                             <script src="https://gist.github.com/ysadrienne/a1242fe63bff4bca3d6098ecd1961667.js"></script>
-                        
                             <p>The following is the Python output when floats <code>2.0|-6.0|0.5</code> are sent to the board: </p>
                             <p><img src="assets/img/lab1b/floats.jpg" alt="..." class="center"></p> 
 
@@ -189,10 +185,8 @@
                                the computer then prints. </p>
                             <p>Since this was a new command, after adding the command to the switch-case chain, I made sure to add it to <i>cmd_types.py</i> and <code>enum CommandTypes</code>. 
                                 Same steps were taken for the remaining tasks that require creating a new command. For the two commands above (<code>ECHO</code> and <code>SEND_THREE_FLOATS</code>), this was unnecessary as they already existed in the file.</p>
-
                             <p>The following is the Arduino code, in which the timestamp is appended to a string <code>'T: '</code></p>
                             <script src="https://gist.github.com/ysadrienne/97627987be0ed39c09258e85adcdab11.js"></script>
-
                             <p>The following is the output printed to the serial monitor when the command is executed: </p> 
                             <p><img src="assets/img/lab1b/gettimesm.jpg" alt="..." class="center"></p> 
                             <p>The following is the Python output after execution, and we can see that the two numbers match, verifying successful transmission. </p> 
@@ -202,11 +196,9 @@
                             <h3 class="mb-0">Task 4: Setting Up Notification Handler</h3>
                             <p></p>
                             <p>To setup a notification handler, I referenced the Member Function table in the <i>demo.ipynb</i> file. </p>
-
                             <p>The following shows the Python code for the notification handler and an output of the timestamp extracted. 
                                 It is printed as an array of 1 element, since I appended the string to an empty array called <code>times</code>. </p> 
                             <p><img src="assets/img/lab1b/handlerpy.jpg" alt="..." class="center"></p> 
-
                             <p>The serial monitor printed out the same timestamp, verifying successful transmission. </p>
                             <p><img src="assets/img/lab1b/handlersm.jpg" alt="..." class="center"></p>
                             <p>There was no new Arduino code, as all we are doing is receiving the string created by the <code>GET_TIME_MILLIS</code> command.</p>
@@ -217,16 +209,12 @@
                             <p>In the <code>CURRENT_TIME_LOOP</code> command, I used a <code>for</code> loop to retrieve multiple timestamps to be sent to my computer and received by the notification handler.
                                 I defined local variables <code>currentTime</code> and <code>startTime</code> to loop for 5000 milliseconds, and <code>timeCount</code> in order to track each timestamp to monitor how many were sent.
                                 </p>
-                            
                             <p>The following is the Arduino code: </p>
                             <script src="https://gist.github.com/ysadrienne/fd3b3fe269e1f975d3ce6a92728cdeb1.js"></script>
-
                             <p>The following is the last few lines of output in the serial monitor showing 568 datapoints: </p>
                             <p><img src="assets/img/lab1b/loopsm.jpg" alt="..." class="center"></p> 
-                            
                             <p>On Python, I printed the number of datapoints from the loop to verify correct data transmission, as printing all datapoints would take up too much space. </p>
                             <p><img src="assets/img/lab1b/looppy.jpg" alt="..." class="center"></p> 
-
                             <p>568 messages were sent over 5 seconds, and the effective data transfer rate calculated is around 113.6 messages per second. 
                                 One thing I did not consider when writing code for this is the size of each message -- There were 10 of 18 byte messages (single digit <code>timeCount</code>), 
                                 89 of 19 byte messages (double digit <code>timeCount</code>), and 469 of 20 byte messages (triple digit <code>timeCount</code>) meaning the actual rate would be slightly different.</p>
@@ -235,37 +223,27 @@
                             <h3 class="mb-0">Task 6: Setting Up Time Array</h3>
                             <p></p>
                             <p>As opposed to sending individual messages one by one, the <code>SEND_TIME_DATA</code> command creates an array that stores 1000 timestamps using <code>millis()</code>. </p>
-                            
                             <p>The following is the Arduino code: </p>
                             <script src="https://gist.github.com/ysadrienne/429347d53cc92ba9e6d6afd88117c2ac.js"></script>
-
                             <p>The first <code>for</code> loop creates and adds 1000 elements to an array called <code>timeArray</code>, 
                                 and second <code>for</code> loop appends the data collected to a string to be printed.</p>
-
                             <p>The following is the last few lines of output in the serial monitor, where we can see 1000 datapoints were printed: </p>
                             <p><img src="assets/img/lab1b/arraysm.jpg" alt="..." class="center"></p> 
-                                
                             <p>Similar to what I did for Task 5, I printed the length of the array on Python to verify correct data transmission, as printing all datapoints would take up too much space. </p> 
                             <p><img src="assets/img/lab1b/arraypy.jpg" alt="..." class="center"></p> 
-
                             <p>It wasn't captured in the screenshot above, but to calculate the effective data transfer rate, I counted the number of messages sent in a second by looking at the number of strings with the same timestamp.
-                                There were 62 entries of 16 byte messages with the timestamp <code>257359</code>, so the rate was 62 messages per second, or 992 bytes per second.
-                            </p>
+                                There were 62 entries of 16 byte messages with the timestamp <code>257359</code>, so the rate was 62 messages per second, or 992 bytes per second.</p>
                             
                             <!--Task 7-->
                             <h3 class="mb-0">Task 7: Setting Up Temperature Array with Time</h3>
                             <p></p>
                             <p>Like the <code>SEND_TIME_DATA</code> command, <code>GET_TEMP_READINGS</code> command creates an array with 1000 elements using <code>getTempDegF()</code>.
                                 The difference is that now the array stores temperature readings in Fahrenheit (very much inferior to Celcius in my opinion), and prints both timestamp and temperature.</p>
-                            
                             <p>In order to achieve this, I created another array called <code>tempArray</code> inside the first <code>for</code> loop, then appended the data to the string in the second <code>for</code> loop.</p>
-                                 
                             <p>The following is the Arduino code: </p>
                             <script src="https://gist.github.com/ysadrienne/470e20de55b95c75f6fb12c8c6745c0f.js"></script>
-
                             <p>The following is the last few lines of output in the serial monitor, where we can see 1000 datapoints of timestamp and temperature were printed: </p>
                             <p><img src="assets/img/lab1b/temsm.jpg" alt="..." class="center"></p> 
-                                
                             <p>Similar to what I did for Task 5 and 6, I printed the length of the array on Python to verify correct data transmission, as printing all datapoints would take up too much space. </p>
                             <p><img src="assets/img/lab1b/tempy.jpg" alt="..." class="center"></p>                         
                             
@@ -318,9 +296,69 @@
                     <h2 class="mb-5">Lab 2: IMU</h2>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">Task 1: </h3>
-                            <p>Writeup</p>
+
+                            <!--Setup-->
+                            <h3 class="mb-0">Setup</h3>
+                            <p></p>
+                            <p>To start, I connected the IMU to the Nano using a Quicc cable, then connected the Nano to my computer. I had the Sparkfun 9DoF IMU library installed already.</p>
+                            <p>The AD0 pin on an I2C slave device (such as the IMU used in this lab) allows the user to change the slave address.  
+                                In <i>Example1_Basics.ino</i>, <code>AD0_VAL</code> should be set to <code>1</code>, since the ADR jumper is open.</p>
+                            <p>Additionally, I used a <code>for</code> loop inside <code>setup</code> so the LED blinks 3 times indicating startup.</p>
+                            <p></p>
+    
+                            <p><b>* I used code from <i>Lecture4-IMU.ino</i> in converting accelerometer data to useable data for the following tasks. *</b></p>
+
+                            <!--Acceleromoter-->
+                            <h3 class="mb-0">Accelerometer</h3>
+                            <p></p>
+                    
+                                <!--Subtask 1-->
+                                <h4 class="mb-0">Task 1: Getting roll and pitch data</h4>
+                                <p></p>
+                                <p>Below is the arduino code taken from <i>Lecture4-IMU.ino</i> to convert roll and pitch data from the accelerometer in degrees.</p>
+                                <script src="https://gist.github.com/ysadrienne/eb450512b815b685635104a54744cd05.js"></script>
+                                <p></p>
+                                
+                                <iframe width="560" height="315" src="https://www.youtube.com/embed/RWbvWRTVhzM?si=ZL15qG8jw3dH3yHg" 
+                                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                                <p></p>
+                                <iframe width="560" height="315" src="https://www.youtube.com/embed/wvuCjlcFRb0?si=BF2cXYYCn9bAJOFk" 
+                                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                                <p></p>
+                                <p>As I rotate the accelerometer using the desk as reference (at -90˚, 0˚, 90˚), the serial monitor displays the similar numbers as the roll and pitch angle measured. 
+                                    The measurements closely matches the physical orientation of the accelerometer, verifying the code.</p>
+                                <p></p>
+                                <p>Two point calibration</p>
+
+                                <!--Subtask 2 & 3-->
+                                <h4 class="mb-0">Task 2 & 3: Analyzing Noise Using Fourier Transform</h4>
+                                <p></p>
+                                <p>Writeup</p>
+
+                                <!--Subtask 4-->
+                                <h4 class="mb-0">Task 4: Low Pass Filter</h4>
+                                <p></p>
+                                <p>Writeup</p>
+
+                            <!--Gyroscope-->
+                            <h3 class="mb-0">Gyroscope</h3>
+                            <p></p>
+                    
+                                <!--Subtask 1-->
+                                <h4 class="mb-0">Task 1: Getting roll, pitch, and yaw data</h4>
+                                <p></p>
+                                <p>Writeup</p>
+                                <p></p>
+
+                                <!--Subtask 2-->
+                                <h4 class="mb-0">Task 2: Complementary Filter</h4>
+                                <p></p>
+                                <p>Writeup</p>
+                                <p></p>
                         </div>
+
                     </div>
                 </div>
             </section>
