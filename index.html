@@ -62,32 +62,48 @@
 
                             <!--Prelab-->
                             <h3 class="mb-0">Prelab</h3>
-                            <p>Writeup</p>
+                            <p>As I already had the latest version of IDE installed on my computer, all I had to do was read instructions and install the Sparkfun Apollo3 boards manager to add the required libraries.</p>
 
                             <!--Task 1-->
-                            <h3 class="mb-0">Task 1: Setup</h3>
-                            <p>Writeup</p>
+                            <h3 class="mb-0">Task 1: Connecting the Board</h3>
+                            <p></p>
+                            <p><img src="assets/img/lab1a/connect.jpg" alt="..." class="center"></p>
+                            <p></p>
+                            <p>I connected the board to my computer and selected the correct port.</p>
 
                             <!--Task 2-->
                             <h3 class="mb-0">Task 2: Blink</h3>
-                            <p>Writeup</p>
+                            <p></p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/ZOLIxwHEHus?si=80r3sNfF1nsagUWf" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <p>After burning the example code to the board, I could see the LED blinking. </p>
 
                             <!--Task 3-->
                             <h3 class="mb-0">Task 3: Serial Monitor</h3>
-                            <p>Writeup</p>
+                            <p></p>
+                            <p><img src="assets/img/lab1a/serial.jpg" alt="..." class="center"></p>
+                            <p></p>
+                            <p>After burning the example code, a series of strings were printed to the serial monitor. The error at the top was due to the mismatch in baud rate</p>
 
                             <!--Task 4-->
                             <h3 class="mb-0">Task 4: Temperature Data</h3>
-                            <p>Writeup</p>
+                            <p></p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/hXaZfDfXhTY?si=bWcFD-V2IJDGt-Bf" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <p>After burning the example code to the board, I grabbed it in my hand to warm it up. It takes some time, but the increase in temperature can be seen in the serial monitor.</p>
 
                             <!--Task 5-->
                             <h3 class="mb-0">Task 5: Microphone Output</h3>
-                            <p>Writeup</p>
-
-                            <!--Discussion-->
-                            <h3 class="mb-0">Discussion</h3>
                             <p></p>
-                            <p>The </p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/vFFzTIOziWU?si=C1HZ99u3cBj7YEeV" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <p>After burning the example code to the board, I whistled into the microphone on the Artemis. The change in frequency can be seen in the serial monitor.</p>
                         </div>
                     </div>
                 </div>
@@ -102,6 +118,7 @@
                         <div class="flex-grow-1">
 
                             <!--Prelab-->
+                            <p></p>
                             <h3 class="mb-0">Prelab</h3>
                             <p>Before starting the tasks, I installed Bleak on my computer, as I was getting pip errors. 
                                 After troubleshooting by restarting the Jupyter notebook, correcting directories, and reinstalling the codebase,
@@ -118,10 +135,8 @@
                             Advertising BLE with MAC: c0:81:19:26:a9:64
                             Connected to: 3c:6:30:b:ac:c1</code></pre></p>
                             <p>I then generated a UUID unique to my computer for secure connection, using the code provided in <i>demo.ipynb</i>:</p>
-                            <p><pre><code>
-                            from uuid import uuid4
-                            uuid4()
-                            </code></pre></p>
+                            <p><img src="assets/img/lab1b/uuid.jpg" alt="..." class="center"></p>
+                            <p></p>
                             <p>Lastly, I replaced the placeholders in the <i>connections.yaml</i> file with my MAC address and the UUID generated:</p>
                             <p><pre><code>
                             artemis_address: 'c0:81:19:26:a9:64'
@@ -137,6 +152,7 @@
                             <p>After completing these steps, I could see the connection was successful.</p>
                             
                             <!--Codebase-->
+                            <p></p>
                             <h3 class="mb-0">Codebase</h3>
                             <p>Writeup</p>
 
@@ -171,15 +187,15 @@
                             <p>The <code>GET_TIME_MILLIS</code> command fetches a timestamp of how much time has elapsed since the board was connected, in milliseconds, then creates a string to print containing the information.  
                                the computer then prints. </p>
                             <p>Since this was a new command, after adding the command to the switch-case chain, I made sure to add it to <i>cmd_types.py</i> and <code>enum CommandTypes</code>. 
-                                For the two commands above (<code>ECHO</code> and <code>SEND_THREE_FLOATS</code>), this was unnecessary as they already existed in the file.</p>
+                                Same steps were taken for the remaining tasks that require creating a new command. For the two commands above (<code>ECHO</code> and <code>SEND_THREE_FLOATS</code>), this was unnecessary as they already existed in the file.</p>
 
                             <p>The following is the Arduino code, in which the timestamp is appended to a string <code>'T: '</code></p>
                             <script src="https://gist.github.com/ysadrienne/97627987be0ed39c09258e85adcdab11.js"></script>
 
                             <p>The following is the output printed to the serial monitor when the command is executed: </p> 
-                            <p><img src="assets/img/lab1b/time.jpg" alt="..." class="center"></p> 
+                            <p><img src="assets/img/lab1b/gettimesm.jpg" alt="..." class="center"></p> 
                             <p>The following is the Python output after execution, and we can see that the two numbers match, verifying successful transmission. </p> 
-                            <p><img src="assets/img/lab1b/time.jpg" alt="..." class="center"></p> 
+                            <p><img src="assets/img/lab1b/gettimepy.jpg" alt="..." class="center"></p> 
 
                             <!--Task 4-->
                             <h3 class="mb-0">Task 4: Setting Up Notification Handler</h3>
@@ -217,50 +233,66 @@
                             <!--Task 6-->
                             <h3 class="mb-0">Task 6: Setting Up Time Array</h3>
                             <p></p>
-                            <p>The <code>SEND_TIME_DATA</code> creates an array that stores all the timestamps collected  sends three floats to the Artemis board, in which the commputer in 
-                                turn extracts and prints the floats. Like the <code>ECHO</code> command, <code>tx_estring_value</code> modifies the string by appending the floats, and <code>tx_characteristic_string</code> sends it to the computer. </p>
+                            <p>As opposed to sending individual messages one by one, the <code>SEND_TIME_DATA</code> command creates an array that stores 1000 timestamps using <code>millis()</code>. </p>
                             
                             <p>The following is the Arduino code: </p>
                             <script src="https://gist.github.com/ysadrienne/429347d53cc92ba9e6d6afd88117c2ac.js"></script>
 
-                            <p>The following is the last few lines of output in the serial monitor, where 568 datapoints were taken: </p>
+                            <p>The first <code>for</code> loop creates and adds 1000 elements to an array called <code>timeArray</code>, 
+                                and second <code>for</code> loop appends the data collected to a string to be printed.</p>
+
+                            <p>The following is the last few lines of output in the serial monitor, where we can see 1000 datapoints were printed: </p>
                             <p><img src="assets/img/lab1b/arraysm.jpg" alt="..." class="center"></p> 
                                 
-                            <p>On Python, I printed the number of datapoints from the loop to verify correct data transmission, as printing all datapoints would take up too much space. </p> 
+                            <p>Similar to what I did for Task 5, I printed the length of the array on Python to verify correct data transmission, as printing all datapoints would take up too much space. </p> 
                             <p><img src="assets/img/lab1b/arraypy.jpg" alt="..." class="center"></p> 
+
+                            <p>It wasn't captured in the screenshot above, but to calculate the effective data transfer rate, I counted the number of messages sent in a second by looking at the number of strings with the same timestamp.
+                                There were 62 entries of 16 byte messages with the timestamp <code>257359</code>, so the rate was 62 messages per second, or 992 bytes per second.
+                            </p>
                             
                             <!--Task 7-->
                             <h3 class="mb-0">Task 7: Setting Up Temperature Array with Time</h3>
                             <p></p>
-                            <p>The <code>GET_TIME_MILLIS</code> command sends three floats to the Artemis board, in which the commputer in turn extracts 
-                                and prints the floats. Like the <code>ECHO</code> command, <code>tx_estring_value</code> modifies the string by appending the floats,
-                                 and <code>tx_characteristic_string</code> sends it to the computer. </p>
+                            <p>Like the <code>SEND_TIME_DATA</code> command, <code>GET_TEMP_READINGS</code> command creates an array with 1000 elements using <code>getTempDegF()</code>.
+                                The difference is that now the array stores temperature readings in Fahrenheit (very much inferior to Celcius in my opinion), and prints both timestamp and temperature.</p>
+                            
+                            <p>In order to achieve this, I created another array called <code>tempArray</code> inside the first <code>for</code> loop, then appended the data to the string in the second <code>for</code> loop.</p>
                                  
                             <p>The following is the Arduino code: </p>
                             <script src="https://gist.github.com/ysadrienne/470e20de55b95c75f6fb12c8c6745c0f.js"></script>
 
-                            <p>The following is the last few lines of output in the serial monitor, where 568 datapoints were taken: </p>
+                            <p>The following is the last few lines of output in the serial monitor, where we can see 1000 datapoints of timestamp and temperature were printed: </p>
                             <p><img src="assets/img/lab1b/temsm.jpg" alt="..." class="center"></p> 
                                 
-                            <p>On Python, I printed the number of datapoints from the loop to verify correct data transmission, as printing all datapoints would take up too much space. </p>
+                            <p>Similar to what I did for Task 5 and 6, I printed the length of the array on Python to verify correct data transmission, as printing all datapoints would take up too much space. </p>
                             <p><img src="assets/img/lab1b/tempy.jpg" alt="..." class="center"></p>                         
                             
                             <!--Task 8-->
                             <h3 class="mb-0">Task 8: Difference Between Methods</h3>
                             <p></p>
-                            <p>The <code>GET_TIME_MILLIS</code> command sends three floats to the Artemis board, in which the commputer in turn extracts and prints the floats. 
-                                Like the <code>ECHO</code> command, <code>tx_estring_value</code> modifies the string by appending the floats, 
-                                and <code>tx_characteristic_string</code> sends it to the computer. The following is the Arduino code: </p>
+                            <p>Discuss the differences between these two methods, the advantages and disadvantages of both and the potential scenarios that you might choose one method over the other. 
+                                How “quickly” can the second method record data? The Artemis board has 384 kB of RAM. 
+                                Approximately how much data can you store to send without running out of memory?</p>
                             
                             <!--Discussion-->
                             <h3 class="mb-0">Discussion</h3>
                             <p></p>
-                            <p>The </p>
+                            <p>This lab was a great exercise for me -- as a mechanical engineer with minimal coding background, it was a good level of difficulty to start with.
+                                </p>
+                            <p>It was also my first time using GitHub and HTML to create a website. Formatting was a bit tricky in the beginning,
+                                but now I am quite satisfied with how I structured my HTML file and the presentation of my website (mostly thanks to the template). I feel more confident about adding future writeups!</p>
 
-                            <!--References-->
-                            <h3 class="mb-0">References</h3>
+                            <!--References and Acknowledgements-->
+                            <h3 class="mb-0">References and Acknowledgements</h3>
                             <p></p>
-                            <p>The </p>
+                            <ul>
+                                <li>Evan Leong, Jeffery Cai, Steven Sun for being a personal TA for a lost mechE student, despite being students themselves</li>
+                                <li>TA Chenyu Zhang for answering my question on Ed Discussion</li>
+                                <li><a href="https://nila-n.github.io/Lab1b.html">Nila Narayan's website</a></li>
+                                <li>ChatGPT for helping me add code to my css file to make small changes to the template</li>
+                                <li><a href="https://startbootstrap.com/theme/resume">Bootstrap template for website</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
