@@ -10951,6 +10951,12 @@ p.lead {
   width: 50%;
 }
 
+.nav-link.active {
+  color: white;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
 section.resume-section {
   display: flex;
   align-items: center;
@@ -10976,4 +10982,27 @@ section.resume-section .resume-section-content {
     padding-top: 5rem;
     padding-bottom: 5rem;
   }
+}
+
+#sideNav {
+  overflow-y: auto; /* Enables vertical scrolling */
+  max-height: 100vh; /* Limits the sidebar height to the viewport */
+}
+
+.navbar-nav {
+  margin: 0;
+  padding: 0;
+}
+
+#sideNav::-webkit-scrollbar {
+  width: 8px; /* Adjust scrollbar width */
+}
+
+#sideNav::-webkit-scrollbar-thumb {
+  background-color: #6c757d; /* Scrollbar color */
+  border-radius: 5px;
+}
+
+#sideNav::-webkit-scrollbar-track {
+  background: #f8f9fa; /* Scrollbar track color */
 }

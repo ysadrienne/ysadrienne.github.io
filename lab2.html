@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Adrienne Yoon MAE 4190: Fast Robots</title>
+        <link rel="icon" type="image/x-icon" href="assets/img/misc/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" /> 
+
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">
+                <span class="d-block d-lg-none">Adrienne Yoon</span>
+                <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="assets/img/misc/profile.jpg" alt="..." /></span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="index.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab1.html">Lab 1:<br>Artemis & Bluetooth</br></a></li>
+                    <li class="nav-item"><a class="nav-link active" href="lab2.html">Lab 2:<br>IMU</br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab3.html">Lab 3:<br>ToF</br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab4.html">Lab 4:<br>Motor Drivers & <br>Open Loop Control</br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab5.html">Lab 5:<br>Linear PID & <br>Interpolation</br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab6.html">Lab 6:<br>Orientation PID</br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab7.html">Lab 7:<br>Kalman Filtering</br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab8.html">Lab 8:<br>Stunts!</br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab9.html">Lab 9:<br>Mapping</br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab10.html">Lab 10:<br>Localization <br><i>Simulation</i></br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab11.html">Lab 11:<br>Localization <br><i>Real</i></br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab12.html">Lab 12:<br>Planning & <br>Execution</br></a></li> 6
+                </ul>
+            </div>
+        </nav>
+        <!-- Page Content-->
+        <div class="container-fluid p-0">
+            <!--Lab 2-->
+            <section class="resume-section" id="lab2">
+                <div class="resume-section-content">
+                    <h2 class="mb-5">Lab 2: IMU</h2>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+
+                            <!--Setup-->
+                            <h3 class="mb-0">Setup</h3>
+                            <p></p>
+                            <p>To start, I connected the IMU to the Nano using a Quicc cable, then connected the Nano to my computer. I had the Sparkfun 9DoF IMU library installed already.</p>
+                            <p>The AD0 pin on an I2C slave device (such as the IMU used in this lab) allows the user to change the slave address.  
+                                In <i>Example1_Basics.ino</i>, <code>AD0_VAL</code> should be set to <code>1</code>, since the ADR jumper is open.</p>
+                            <p>Additionally, I used a <code>for</code> loop inside <code>setup</code> so the LED blinks indicating startup.</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/TeaxO5p5SRI?si=GuizUB_46Qfp3aiO" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+    
+                            <p><b>* I used code from <i>Lecture4-IMU.ino</i> in converting accelerometer data to useable data for the following tasks. *</b></p>
+
+                            <!--Acceleromoter-->
+                            <h3 class="mb-0">Accelerometer</h3>
+                            <p></p>
+                    
+                                <!--Subtask 1-->
+                                <h4 class="mb-0">Task 1: Getting roll and pitch data</h4>
+                                <p></p>
+                                <p>Below is the arduino code taken from <i>Lecture4-IMU.ino</i> to convert roll and pitch data from the accelerometer in degrees.</p>
+                                <script src="https://gist.github.com/ysadrienne/eb450512b815b685635104a54744cd05.js"></script>
+                                <p></p>
+                                
+                                <iframe width="560" height="315" src="https://www.youtube.com/embed/RWbvWRTVhzM?si=ZL15qG8jw3dH3yHg" 
+                                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                                <p></p>
+                                <iframe width="560" height="315" src="https://www.youtube.com/embed/wvuCjlcFRb0?si=BF2cXYYCn9bAJOFk" 
+                                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                                <p></p>
+                                <p>As I rotate the accelerometer using the desk as reference (at -90˚, 0˚, 90˚), the serial monitor displays the similar numbers as the roll and pitch angle measured. 
+                                    The measurements closely matches the physical orientation of the accelerometer, verifying the code.</p>
+                                <p></p>
+                                <img src="assets/img/lab2/rpraw.jpg" alt="..." class="center"/>
+                                <p>After collecting data of the acceleromoter sitting flat on the desk, I noticed the data was slightly off, and that calibration was needed. 
+                                    I used the following method from this post on <a href="https://learn.adafruit.com/calibrating-sensors/two-point-calibration">adafruit's website</a> to perform a two-point calibration.</p>
+                                <img src="assets/img/lab2/calibration.jpg" alt="..." class="center"/>
+                                <p></p>
+                                <p>My <b>ReferenceLow</b>, <b>ReferenceHigh</b>, and <b>ReferenceRange</b> would be -90˚, 0˚, 90˚ respectively. <br>
+                                Roll measurements using the accelerometer showed <b>RawLow</b>, <b>RawHigh</b>, and <b>RawRange</b> as -90.603, 91.257, 181.86. 
+                                <br>Pitch measurements using the accelerometer showed <b>RawLow</b>, <b>RawHighr</b>, and <b>RawRange</b> as -91.12, 89.665, 180.785. Therefore, 
+                                <br>Roll calibration: <b>(((Raw Value - (-90.603)) * 180) / 181.86) + (-90)</b>
+                                <br>Pitch calibration: <b>(((Raw Value - (-91.12)) * 180) / 180.785) + (-90)</b></p>
+
+                                <!--Subtask 2 & 3-->
+                                <h4 class="mb-0">Tasks 2 & 3: Analyzing Noise Using Fourier Transform</h4>
+                                <p></p>
+                                <p>The roll and pitch plots show some noticeable peaks and drops indicating noisy data, so I collected data and performed FFT in order to analyze the noise. 
+                                    Initially, I placed the accelerometer flat on the desk, but the only prominent peak at 0 Hz gave no meaningful analysis. 
+                                    Moving the accelerometer around to vary both roll and yaw, I was able to obtain more useful results.
+                                    <br>The plots below each show the raw roll data from the accelerometer, and the corresponding FFT analysis.</p>
+                                <img src="assets/img/lab2/rawroll.jpg" alt="..." class="center"/>
+                                <img src="assets/img/lab2/rollfft.jpg" alt="..." class="center"/>
+                                <br>Similarlly, the plots below each show the raw pitch data from the accelerometer, and FFT performed on the data.</p>
+                                <img src="assets/img/lab2/rawpitch.jpg" alt="..." class="center"/>
+                                <img src="assets/img/lab2/pitchfft.jpg" alt="..." class="center"/>
+
+                                <!--Subtask 4-->
+                                <h4 class="mb-0">Task 4: Low Pass Filter</h4>
+                                <p></p>
+                                <p>To reduce noise, I implemented a low pass filter.</p>
+                                <p>I chose a cutoff frequency of 5 Hz as significant peaks were shown between 1 - 5 Hz for both roll and pitch in the FFT plots.</p>
+                                <p>I calculated <i>α = 0.3</i> using the equation provided in lectrure, where <i>T = 72.43</i> from sampling rate, and <i>RC = 0.0318</i> using 5 Hz as cutoff frequency.</p>
+                                <img src="assets/img/lab2/alpha.jpg" alt="..." class="center"/>
+                                <p>The two images below show raw and filtered roll and pitch plots for <i>α = 0.3</i>. 
+                                    The red line, representing the filtered data, is much smoother and eliminates prominent peaks.</p>
+                                <img src="assets/img/lab2/rolllpf.jpg" alt="..." class="center"/>
+                                <img src="assets/img/lab2/pitchlpf.jpg" alt="..." class="center"/>
+                                <p>In previous years, many students used <i>α = 0.1</i>, so I applied this value to my pitch data for comparison. 
+                                    The results show that <i>α = 0.1</i> filters out significantly more data.</p>
+                                <img src="assets/img/lab2/alpha01.jpg" alt="..." class="center"/>
+
+                            <!--Gyroscope-->
+                            <h3 class="mb-0">Gyroscope</h3>
+                            <p></p>
+                    
+                                <!--Subtask 1-->
+                                <h4 class="mb-0">Task 1: Getting roll, pitch, and yaw data</h4>
+                                <p></p>
+                                <p>Writeup</p>
+                                <p></p>
+
+                                <!--Subtask 2-->
+                                <h4 class="mb-0">Task 2: Complementary Filter</h4>
+                                <p></p>
+                                <p>Writeup</p>
+                                <p></p>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <hr class="m-0" />            
+            
+        </div>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>
