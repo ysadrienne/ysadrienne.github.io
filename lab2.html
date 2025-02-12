@@ -27,7 +27,7 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link" href="index.html">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="lab1.html">Lab 1:<br>Artemis & Bluetooth</br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab1.html">Lab 1:<br>Artemis & <br>Bluetooth</br></a></li>
                     <li class="nav-item"><a class="nav-link active" href="lab2.html">Lab 2:<br>IMU</br></a></li>
                     <li class="nav-item"><a class="nav-link" href="lab3.html">Lab 3:<br>ToF</br></a></li>
                     <li class="nav-item"><a class="nav-link" href="lab4.html">Lab 4:<br>Motor Drivers & <br>Open Loop Control</br></a></li>
@@ -38,7 +38,7 @@
                     <li class="nav-item"><a class="nav-link" href="lab9.html">Lab 9:<br>Mapping</br></a></li>
                     <li class="nav-item"><a class="nav-link" href="lab10.html">Lab 10:<br>Localization <br><i>Simulation</i></br></a></li>
                     <li class="nav-item"><a class="nav-link" href="lab11.html">Lab 11:<br>Localization <br><i>Real</i></br></a></li>
-                    <li class="nav-item"><a class="nav-link" href="lab12.html">Lab 12:<br>Planning & <br>Execution</br></a></li> 6
+                    <li class="nav-item"><a class="nav-link" href="lab12.html">Lab 12:<br>Planning & <br>Execution</br></a></li>
                 </ul>
             </div>
         </nav>
@@ -54,7 +54,7 @@
                             <!--Setup-->
                             <h3 class="mb-0">Setup</h3>
                             <p></p>
-                            <p>To start, I connected the IMU to the Nano using a Quicc cable, then connected the Nano to my computer. I had the Sparkfun 9DoF IMU library installed already.</p>
+                            <p>To start, I connected the IMU to the Artemis using a QWIIC cable, then connected the Artemis to my computer. I had the Sparkfun 9DoF IMU library installed already.</p>
                             <p>The AD0 pin on an I2C slave device (such as the IMU used in this lab) allows the user to change the slave address.  
                                 In <i>Example1_Basics.ino</i>, <code>AD0_VAL</code> should be set to <code>1</code>, since the ADR jumper is open.</p>
                             <p>Additionally, I used a <code>for</code> loop inside <code>setup</code> so the LED blinks indicating startup.</p>
@@ -105,10 +105,8 @@
                                     Initially, I placed the accelerometer flat on the desk, but the only prominent peak at 0 Hz gave no meaningful analysis. 
                                     Moving the accelerometer around to vary both roll and yaw, I was able to obtain more useful results.
                                     <br>The plots below each show the raw roll data from the accelerometer, and the corresponding FFT analysis.</p>
-                                <img src="assets/img/lab2/rawroll.jpg" alt="..." class="center"/>
                                 <img src="assets/img/lab2/rollfft.jpg" alt="..." class="center"/>
                                 <br>Similarlly, the plots below each show the raw pitch data from the accelerometer, and FFT performed on the data.</p>
-                                <img src="assets/img/lab2/rawpitch.jpg" alt="..." class="center"/>
                                 <img src="assets/img/lab2/pitchfft.jpg" alt="..." class="center"/>
 
                                 <!--Subtask 4-->
@@ -118,13 +116,10 @@
                                 <p>I chose a cutoff frequency of 5 Hz as significant peaks were shown between 1 - 5 Hz for both roll and pitch in the FFT plots.</p>
                                 <p>I calculated <i>α = 0.3</i> using the equation provided in lectrure, where <i>T = 72.43</i> from sampling rate, and <i>RC = 0.0318</i> using 5 Hz as cutoff frequency.</p>
                                 <img src="assets/img/lab2/alpha.jpg" alt="..." class="center"/>
-                                <p>The two images below show raw and filtered roll and pitch plots for <i>α = 0.3</i>. 
-                                    The red line, representing the filtered data, is much smoother and eliminates prominent peaks.</p>
-                                <img src="assets/img/lab2/rolllpf.jpg" alt="..." class="center"/>
-                                <img src="assets/img/lab2/pitchlpf.jpg" alt="..." class="center"/>
-                                <p>In previous years, many students used <i>α = 0.1</i>, so I applied this value to my pitch data for comparison. 
-                                    The results show that <i>α = 0.1</i> filters out significantly more data.</p>
-                                <img src="assets/img/lab2/alpha01.jpg" alt="..." class="center"/>
+                                <p>The two images below show raw and filtered roll and pitch plots for <i>α = 0.1</i>, with their corresponding FFT plot. 
+                                    The red line, representing the filtered data, is much smoother and eliminates prominent peaks in raw data. It can also be seen in the FFT plot that the magnitude of higher frequency data is much smaller than that of lower frequency data.</p>
+                                <img src="assets/img/lab2/rollfftcomp.jpg" alt="..." class="center"/>
+                                <img src="assets/img/lab2/pitchfftcomp.jpg" alt="..." class="center"/>
 
                             <!--Gyroscope-->
                             <h3 class="mb-0">Gyroscope</h3>
@@ -133,14 +128,102 @@
                                 <!--Subtask 1-->
                                 <h4 class="mb-0">Task 1: Getting roll, pitch, and yaw data</h4>
                                 <p></p>
-                                <p>Writeup</p>
+                                <p>Below are roll, pitch, and yaw plots from the gyroscope while I moved it around randomly, without any filtering of data. 
+                                    From the high absolute values, we can see drifting occuring.</p>
+                                <img src="assets/img/lab2/gyrorollraw.jpg" alt="..." class="center"/>
+                                <img src="assets/img/lab2/gyropitchraw.jpg" alt="..." class="center"/>
+                                <img src="assets/img/lab2/gyroyawraw.jpg" alt="..." class="center"/>
+
+                                <p>Below are videos of the serial plotter, comparing the data from the gyroscope and the accelerometer. 
+                                    It is much more obvious in the comparison that raw gyroscope data has much less noise than accelerometer data but tends to drift over time.</p>
+
+                                <iframe width="560" height="315" src="https://www.youtube.com/embed/pIcTqzvhn00?si=OwnG0OuefgUFtnJ_" 
+                                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                                <p></p>
+                                <iframe width="560" height="315" src="https://www.youtube.com/embed/vpAtvxFliwg?si=xrAft43EEEAowh5L" 
+                                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
                                 <p></p>
 
                                 <!--Subtask 2-->
                                 <h4 class="mb-0">Task 2: Complementary Filter</h4>
                                 <p></p>
-                                <p>Writeup</p>
+                                <p>To mitigate this error in gyroscope data due to drifting, I implemented a complementary filter using the equation provided in class. I chose <i>α = 0.8</i>, placing more weight on accelerometer data. 
+                                    Despite some noise in the data, the accelorometer provided good overall accuracy when measured against reference points such as a wall or a desk.
+                                    Below is the equation from lecture, and a snippet of the code I used for processing roll data.</p>
+                                    <img src="assets/img/lab2/compeq.jpg" alt="..." class="center"/>
+                                    <script src="https://gist.github.com/ysadrienne/c20598e2f2b295c290179fab8164bc83.js"></script>
+        
+                                <p>The plot below shows raw gyroscope roll data in blue, complementary roll data in red, and low-pass filtered accelerometer roll data in green while I rocked the IMU about the x-axis.
+                                    The complementary data follows the raw gyroscope roll data trend quite closely while reducing noise from the accelerometer, as well as correcting drift using accelerometer data. </p>
+                                <img src="assets/img/lab2/rollcomp.jpg" alt="..." class="center" width="800" height="200"/>
+                                <p>Similarly, the plot below shows raw gyroscope pitch data in blue, complementary pitch data in red, and low-pass filtered accelerometer pitch data in green while I rocked the IMU about the y axis.
+                                    Again, the complementary data follows the raw gyroscope pitch data trend quite closely, and gets rid of noise from the accelerometer as well as correcting drift using accelorometer data. </p>
+                                <img src="assets/img/lab2/pitchcomp.jpg" alt="..." class="center" width="800" height="200"/>
                                 <p></p>
+
+                            <!--Sampling Data-->
+                            <h3 class="mb-0">Sampling Data</h3>
+                            <p></p>
+
+                                <!--Subtasks 1, 2, 3-->
+                                <h4 class="mb-0">Tasks 1, 2, 3: Code to speed up loop execution</h4>
+                                <p></p>
+                                <p>To speed up main loop execution, I deleted all unnecessary print commands and delays, only leaving code to append the time-stamped IMU data to arrays I created for each data type.
+                                    This enabled me to send 2000 strings containing 8 different datapoints (time, filtered accelerometer roll and pitch, raw and filtered gyroscope roll and pitch, and raw gyroscope yaw) in 5900 ms, 
+                                    meaning it took 2.95 ms per sample.
+                                    Since a float is 4 bytes and each string contains 32 bytes with 8 arrays. As the Artemis has 384 kB of RAM, meaning it can collect data for up to 35.4 seconds assuming we use all 384 kB.
+                                     </p>
+                                <script src="https://gist.github.com/ysadrienne/e2dd47ffacf066d7d0a90d557a21e57e.js"></script>
+
+                                <!--Subtask 4-->
+                                <h4 class="mb-0">Task 4: Collecting data for 5 seconds</h4>
+                                <p></p>
+                                <p>The plot below shows all the data collected for this lab in the same figure. 
+                                    The x-axis shows all the data was collected for more than 5 seconds.
+                                </p>
+                                <img src="assets/img/lab2/alldata.jpg" alt="..." class="center"/>
+                                <p>I had a lot of trouble getting this plot to work, it turns out I was missing a bracket that completed my for loop...</p>
+
+                            <!--Stunts-->
+                            <h3 class="mb-0">Stunts</h3>
+                            <p></p>
+                            <p>Below are videos of some stunts I tried. It was surprisingly hard to get the car to turn a corner, and I could see that the car doesn't always drive straight even if there were no obstacles in the path.
+                                I saw quickly reversing the direction of the car made it flip, and spinning it often caused the car to roll over on its side.</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/EnNUms-lako?si=8XLPdxPqt1uuZt5p" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/-AOgPszE_FQ?si=SpG_AgsxONHdymSw" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/TYoE-M-NnCA?si=ws6ezSmc8WRHQ0Qs" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            
+                            <!--Discussion-->
+                            <h3 class="mb-0">Discussion</h3>
+                            <p></p>
+                            <p>This lab not only helped me really understand how gyroscopes and accelorometers work and what filters are used to mitigate for the inherent error in these sensors,
+                                but also how to debug code when I run into a problem. I had to add a lot of print lines to see what might have gone wrong with my code, and also check if I made any silly mistakes, such places where I instantiate variables so that they update correctly.
+                            </p>
+
+                            <!--References and Acknowledgements-->
+                            <h3 class="mb-0">References and Acknowledgements</h3>
+                            <p></p>
+                            <ul>
+                                <li>Evan Leong, Jeffery Cai, Steven Sun for being a personal TA for a lost mechE student, despite being students themselves</li>
+                                <li>Jeffery and Steven again for helping me immensely with the complementary filter implementation</li>
+                                <li>Jeffery for filming me trying to drive the car</li>
+                                <li>Lecture slides and code</li>
+                                <li>Farrell for answering my questions</li>
+                                <li><a href="https://nila-n.github.io/Lab1b.html">Nila Narayan's website</a></li>
+                                <li><a href="https://learn.adafruit.com/calibrating-sensors/two-point-calibration">Adafruit forum</a> for two point callibration</li>
+                                <li>ChatGPT for correcting grammar and spelling errors</li>
+                                <li><a href="https://startbootstrap.com/theme/resume">Bootstrap template for website</a></li>
+                            </ul>
                         </div>
 
                     </div>
