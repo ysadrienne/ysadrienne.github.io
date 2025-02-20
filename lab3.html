@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Adrienne Yoon MAE 4190: Fast Robots</title>
+        <link rel="icon" type="image/x-icon" href="assets/img/misc/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" /> 
+
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">
+                <span class="d-block d-lg-none">Adrienne Yoon</span>
+                <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="assets/img/misc/profile.jpg" alt="..." /></span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="index.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab1.html">Lab 1:<br>Artemis & <br>Bluetooth</br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab2.html">Lab 2:<br>IMU</br></a></li>
+                    <li class="nav-item"><a class="nav-link active" href="lab3.html">Lab 3:<br>ToF</br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab4.html">Lab 4:<br>Motor Drivers & <br>Open Loop Control</br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab5.html">Lab 5:<br>Linear PID & <br>Interpolation</br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab6.html">Lab 6:<br>Orientation PID</br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab7.html">Lab 7:<br>Kalman Filtering</br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab8.html">Lab 8:<br>Stunts!</br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab9.html">Lab 9:<br>Mapping</br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab10.html">Lab 10:<br>Localization <br><i>Simulation</i></br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab11.html">Lab 11:<br>Localization <br><i>Real</i></br></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lab12.html">Lab 12:<br>Planning & <br>Execution</br></a></li>
+                </ul>
+            </div>
+        </nav>
+        <!-- Page Content-->
+        <div class="container-fluid p-0">
+            <!--Lab 3-->
+            <section class="resume-section" id="lab3">
+                <div class="resume-section-content">
+                    <h2 class="mb-5">Lab 3: Time of Flight Sensor</h2>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+
+                            <!--Prelab-->
+                            <h3 class="mb-0">Prelab</h3>
+                            <p></p>
+                            <p>The datasheet shows that the I2C bus on the ToF sensor uses a device address of 0x52. Since we are using 2 of the same sensors with the same default address, 
+                                I decided to use the XSHUT pin to change the address on one of the sensors. I chose this over changing the address programmatically for less wiring and power management.
+                                Using a jumper, I soldered the XSHUT pin on one of the sensors to the Artemis (pin A2) nso that when powered on, the sensor connected can be held in shutdown mode while the address of the other sensor can be changed.
+                                This way, when the soldered sensor is turned back on, it can keeps its default address as the unsoldered sensor will have a new address assigned.
+                                Though there are some inconveniences to this method such as having to desolder if something goes wrong and needs to be initialized every startup, 
+                                it is more suitable for this case where we want to minimize wiring.</p>
+                            <p>As of now, I plan to place one sensor in the front of the car and the other in the back.  The sensors won't be able to detect obstables on the sides of the car due to their range, 
+                                but I assume most of the motion would be backwards and forwards since the car cannot move directly sideways. I soldered the two longer QWIIC connectors to the ToF sensors so they can reach both the front and back, given the Artemis is placed in the center.
+                               </p>
+                            
+                            <!--Tasks 1 through 4-->
+                            <h3 class="mb-0">Tasks 1 through 4: Hardware Things</h3>
+                            <p></p>
+                            <p>I tested out the bluetooth connection using my code for <a href="https://ysadrienne.github.io/lab2.html">Lab 2: IMU</a>. </p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/wn3c41Xgfcs?si=hXmlU6NqIiVztO0i" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <img src="assets/img/lab3/wired.jpg" alt="..." class="center">
+
+                            <!--Task 5-->
+                            <h3 class="mb-0">Task 5: I2C Channel</h3>
+                            <p></p>
+                            <img src="assets/img/lab3/tofscan.jpg" alt="..." class="center"/>
+                            <p>Writeup</p>
+
+                            <!--Task 6-->
+                            <h3 class="mb-0">Task 6: Short, Medium, and Long Distance Modes</h3>
+                            <p></p>
+                            <p>The ToF sensor has three distance modes: short, medium, and long, where medium distance mode isn't a built-in hardware feature but a mode that can be configured through software.
+                                The longer the distance, the more far out the sensor will be able to detect objects range the sensor covers but becomes more susceptible to ambient light.
+                                For this lab, I decided to use the short mode because I anticipate the car to go through abrupt changes in direction and flipping around obstables, rather than coasting for long distances.
+                                As long as the sensor can detect obstacles near the car, lower susceptibility to ambien light is better for my use case.
+                            </p>
+                            <img src="assets/img/lab3/distancemodes.jpg" alt="..." class="center"/>
+
+                            <!--Task 7-->
+                            <h3 class="mb-0">Task 7: Testing [Chosen] Mode</h3>
+                            <p></p>
+                            <p>Writeup</p>
+
+                            <!--Task 8-->
+                            <h3 class="mb-0">Task 8: Connecting Both Sensors</h3>
+                            <p></p>
+                            <script src="https://gist.github.com/ysadrienne/7010649e13fa9ab1cc1778ab23c71e8c.js"></script>
+                            <script src="https://gist.github.com/ysadrienne/d02e9200087dbd72da8d7885b08e436f.js"></script>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/Vdq_4xmjA7Y?si=rQYACnqflpaNyNz6" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p>Writeup</p>
+
+                            <!--Task 9-->
+                            <h3 class="mb-0">Task 9: Cutting down execution time</h3>
+                            <p></p>
+                            <p>Writeup</p>
+
+                            <!--Tasks 10 though 12-->
+                            <h3 class="mb-0">Tasks 10 through 12: Sending Time-stamped sensor Data over Bluetooth</h3>
+                            <p></p>
+                            <p>Writeup</p>
+                    
+                            <!--Discussion-->
+                            <h3 class="mb-0">Discussion</h3>
+                            <p></p>
+                            <p>Writeup</p>
+
+                            <!--References and Acknowledgements-->
+                            <h3 class="mb-0">References and Acknowledgements</h3>
+                            <p></p>
+                            <ul>
+                                <li>stuff</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <hr class="m-0" />            
+            
+        </div>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>
