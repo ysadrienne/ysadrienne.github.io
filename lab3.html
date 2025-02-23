@@ -56,29 +56,32 @@
                             <p></p>
                             <p>The datasheet shows that the I2C bus on the ToF sensor uses a device address of 0x52. Since we are using 2 of the same sensors with the same default address, 
                                 I decided to use the XSHUT pin to change the address on one of the sensors. I chose this over changing the address programmatically for less wiring and power management.
-                                Using a jumper, I soldered the XSHUT pin on one of the sensors to the Artemis (pin A2) nso that when powered on, the sensor connected can be held in shutdown mode while the address of the other sensor can be changed.
+                                Using a jumper, I soldered the XSHUT pin on one of the sensors to the Artemis (pin A2) so that when powered on, the sensor connected can be held in shutdown mode while the address of the other sensor can be changed.
                                 This way, when the soldered sensor is turned back on, it can keeps its default address as the unsoldered sensor will have a new address assigned.
                                 Though there are some inconveniences to this method such as having to desolder if something goes wrong and needs to be initialized every startup, 
                                 it is more suitable for this case where we want to minimize wiring.</p>
-                            <p>As of now, I plan to place one sensor in the front of the car and the other in the back.  The sensors won't be able to detect obstables on the sides of the car due to their range, 
-                                but I assume most of the motion would be backwards and forwards since the car cannot move directly sideways. I soldered the two longer QWIIC connectors to the ToF sensors so they can reach both the front and back, given the Artemis is placed in the center.
-                               </p>
-                            
+                        
                             <!--Tasks 1 through 4-->
                             <h3 class="mb-0">Tasks 1 through 4: Hardware Things</h3>
                             <p></p>
-                            <p>I tested out the bluetooth connection using my code for <a href="https://ysadrienne.github.io/lab2.html">Lab 2: IMU</a>. </p>
+                            <p>In order to power my Artemis without having to connect to my computer, I soldered JST connecters to the 650mAh battery provided in lab.</p>
+                            <p>I tested out the bluetooth connection using my code for <a href="https://ysadrienne.github.io/lab2.html">Lab 2: IMU</a>. IMU data was successfully transmitted via Bluetooth using the battery. </p>
                             <iframe width="560" height="315" src="https://www.youtube.com/embed/wn3c41Xgfcs?si=hXmlU6NqIiVztO0i" 
                             title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                             referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
                             <p></p>
-                            <img src="assets/img/lab3/wired.jpg" alt="..." class="center">
-
+                            <p>As of now, I plan to place one sensor in the front of the car and the other in the back.  The sensors won't be able to detect obstables on the sides of the car due to their range, 
+                                but I assume most of the motion would be backwards and forwards since the car cannot move directly sideways. I soldered the two longer QWIIC connectors to the ToF sensors so they can reach both the front and back, given the Artemis is placed in the center.</p>
+                            <p>Below is the diagram of connections.</p>
+                               <img src="assets/img/lab3/wired.jpg" alt="..." class="center">
+                            <p></p>
+                            
                             <!--Task 5-->
                             <h3 class="mb-0">Task 5: I2C Channel</h3>
                             <p></p>
                             <img src="assets/img/lab3/tofscan.jpg" alt="..." class="center"/>
-                            <p>Writeup</p>
+                            <p>Running the Example code for Wire I2C, I could see the address of the sensor printed to the serial monitor. While the datasheet showed that the default address for these sensors are 0x52,
+                                the printed address was 0x29. This is because the binary address was shifted one bit to the right, as 52 is 0b1010010 and 29 is 0b0101001 in binary.</p>
 
                             <!--Task 6-->
                             <h3 class="mb-0">Task 6: Short, Medium, and Long Distance Modes</h3>
@@ -86,14 +89,14 @@
                             <p>The ToF sensor has three distance modes: short, medium, and long, where medium distance mode isn't a built-in hardware feature but a mode that can be configured through software.
                                 The longer the distance, the more far out the sensor will be able to detect objects range the sensor covers but becomes more susceptible to ambient light.
                                 For this lab, I decided to use the short mode because I anticipate the car to go through abrupt changes in direction and flipping around obstables, rather than coasting for long distances.
-                                As long as the sensor can detect obstacles near the car, lower susceptibility to ambien light is better for my use case.
-                            </p>
+                                As long as the sensor can detect obstacles near the car, lower susceptibility to ambient light is better for my use case.</p>
                             <img src="assets/img/lab3/distancemodes.jpg" alt="..." class="center"/>
 
                             <!--Task 7-->
-                            <h3 class="mb-0">Task 7: Testing [Chosen] Mode</h3>
+                            <h3 class="mb-0">Task 7: Testing Short Mode</h3>
                             <p></p>
                             <p>Writeup</p>
+                            <script src="https://gist.github.com/ysadrienne/53964d37e1a8cdc2a90bd9003cc24b22.js"></script>
 
                             <!--Task 8-->
                             <h3 class="mb-0">Task 8: Connecting Both Sensors</h3>
@@ -109,11 +112,15 @@
                             <h3 class="mb-0">Task 9: Cutting down execution time</h3>
                             <p></p>
                             <p>Writeup</p>
+                            <img src="assets/img/lab3/speedup.jpg" alt="..." class="center"/>
+
 
                             <!--Tasks 10 though 12-->
                             <h3 class="mb-0">Tasks 10 through 12: Sending Time-stamped sensor Data over Bluetooth</h3>
                             <p></p>
-                            <p>Writeup</p>
+                            <img src="assets/img/lab3/tofdata.jpg" alt="..." class="center"/>
+                            <img src="assets/img/lab3/imudata.jpg" alt="..." class="center"/>
+                            <p>I added the actual code in the appendix below, since it is quite lond and I did not make notable changes to the codes I had from lab 2 and preceding tasks.</p>
                     
                             <!--Discussion-->
                             <h3 class="mb-0">Discussion</h3>
@@ -124,10 +131,18 @@
                             <h3 class="mb-0">References and Acknowledgements</h3>
                             <p></p>
                             <ul>
-                                <li>stuff</li>
+                                <li><a href="https://ns14.github.io/lab3">Nidhi Sonwalker's website</a></li>
+                                <li><a href="https://fast.synthghost.com/lab-3-time-of-flight/">Stephan Wagner's website</a></li>
                             </ul>
-                        </div>
 
+                            <!--Appendix-->
+                            <h3 class="mb-0">Appendix</h3>
+                            <p></p>
+                            <ul>
+                            <li>Below is the code for sending both ToF and IMU data over bluetooth.</li>
+                            </ul>
+                            <script src="https://gist.github.com/ysadrienne/caaf53d80b657e51eda2ad14d343fed4.js"></script>
+                        </div>
                     </div>
                 </div>
             </section>
