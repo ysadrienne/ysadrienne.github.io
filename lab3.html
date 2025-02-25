@@ -72,7 +72,7 @@
                             <p></p>
                             <p>As of now, I plan to place one sensor in the front of the car and the other in the back.  The sensors won't be able to detect obstables on the sides of the car due to their range, 
                                 but I assume most of the motion would be backwards and forwards since the car cannot move directly sideways. I soldered the two longer QWIIC connectors to the ToF sensors so they can reach both the front and back, given the Artemis is placed in the center.</p>
-                            <p>Below is the diagram of connections.</p>
+                            <p>Below is a sketch of how I connected the wires.</p>
                                <img src="assets/img/lab3/wired.jpg" alt="..." class="center">
                             <p></p>
                             
@@ -80,6 +80,7 @@
                             <h3 class="mb-0">Task 5: I2C Channel</h3>
                             <p></p>
                             <img src="assets/img/lab3/tofscan.jpg" alt="..." class="center"/>
+                            <p></p>
                             <p>Running the Example code for Wire I2C, I could see the address of the sensor printed to the serial monitor. While the datasheet showed that the default address for these sensors are 0x52,
                                 the printed address was 0x29. This is because the binary address was shifted one bit to the right, as 52 is 0b1010010 and 29 is 0b0101001 in binary.</p>
 
@@ -95,42 +96,61 @@
                             <!--Task 7-->
                             <h3 class="mb-0">Task 7: Testing Short Mode</h3>
                             <p></p>
-                            <p>Writeup</p>
+                            <p>To test my chosen mode, I set up a tissue box at the end of a measuring tape and took 16 measurements in 100mm increments, ranging from 0 to 1500mm.
+                                I chose to test up to 1500mm because the datasheet lists the maximum ranging distance as 1300mm, and I wanted to see if accuracy noticeably decreases beyond that point.</p>
+                            <p>Below is the code I used for testing. I wrote a command that makes 50 measurements and takes the average and calculates standard deviation.</p>
                             <script src="https://gist.github.com/ysadrienne/53964d37e1a8cdc2a90bd9003cc24b22.js"></script>
+                            <p>The first plot confirms the range specified in the datasheet, as it clearly shows that measurements beyond 1300mm deviate more from the actual value compared to those below 1300mm.
+                                The second plot indicates that measurements have a higher standard deviation for distances beyond 1300mm, indicating that as the distance increases, repeatability decreases.
+                                Timestamps also showed that there was about a 47ms delay between each date point.
+                            </p>
+                            <img src="assets/img/lab3/testplot.jpg" alt="..." class="center"/>
+                            <img src="assets/img/lab3/teststd.jpg" alt="..." class="center"/>
 
                             <!--Task 8-->
                             <h3 class="mb-0">Task 8: Connecting Both Sensors</h3>
                             <p></p>
-                            <script src="https://gist.github.com/ysadrienne/7010649e13fa9ab1cc1778ab23c71e8c.js"></script>
+                            <p>Below is the code setup for collecting data from two ToF sensors simultaneously. As mentioned earlier, I used the XSHUT pin to enable both sensors, which share the same default I2C address.
+                                At startup, the code turns off <code>TOF1</code>, the sensor with the XSHUT pin soldered to pin <code>8</code> on the Artemis. 
+                                The code then changes the address of <code>TOF2</code> to <code>NEW</code> (which I set to 30), then turns <code>TOF2</code> back on with its default address.</p>
                             <script src="https://gist.github.com/ysadrienne/d02e9200087dbd72da8d7885b08e436f.js"></script>
+                            <p>Below is the code in the main loop that constantly measures distance with both sensors, and a video of the code working. </p>
+                            <script src="https://gist.github.com/ysadrienne/7010649e13fa9ab1cc1778ab23c71e8c.js"></script>
                             <iframe width="560" height="315" src="https://www.youtube.com/embed/Vdq_4xmjA7Y?si=rQYACnqflpaNyNz6" 
                             title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                             referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
-                            <p>Writeup</p>
+                            <p></p>
 
                             <!--Task 9-->
                             <h3 class="mb-0">Task 9: Cutting down execution time</h3>
                             <p></p>
-                            <p>Writeup</p>
+                            <p>In order to minimize execution time, I added code to record and print ToF data only when it is available.</p>
                             <img src="assets/img/lab3/speedup.jpg" alt="..." class="center"/>
-
+                            <p>From this, I could see that each ToF data point was printed approximately every 46,700 microseconds, while the loop executed every 5,200 microseconds, indicating that the ToF sensor's data collection speed is the limiting factor.
+                                This could be because the ToF sensor needs to wait for the emitted light to be reflected back before recording a measurement, causing a delay.</p>
 
                             <!--Tasks 10 though 12-->
                             <h3 class="mb-0">Tasks 10 through 12: Sending Time-stamped sensor Data over Bluetooth</h3>
                             <p></p>
+                            <p>Modifying code from labs 1 and 2, I was able to successfully measure and transmit data from the IMU and ToF sensors simultaneously, then plot it in Jupyter.
+                                Originally I was having a lot of trouble getting measurements from my ToF sensors, even though all my sensors were initiallizing correctly.
+                                I realized the issue was due to collecting too much data with 7 arrays with a size of 2000 for all three sensors, possibly resulting in communication bottleneck especially since the IMU collects data much faster than ToF sensors can.
+                            </p>
                             <img src="assets/img/lab3/tofdata.jpg" alt="..." class="center"/>
                             <img src="assets/img/lab3/imudata.jpg" alt="..." class="center"/>
-                            <p>I added the actual code in the appendix below, since it is quite lond and I did not make notable changes to the codes I had from lab 2 and preceding tasks.</p>
-                    
+                            <p>I included the actual code in the appendix below, as it is quite long and I did not make any significant changes to the code from Lab 2 and previous tasks.</p>
+
                             <!--Discussion-->
                             <h3 class="mb-0">Discussion</h3>
                             <p></p>
-                            <p>Writeup</p>
+                            <p>This was my first time learning how to solder properly.</p>
 
                             <!--References and Acknowledgements-->
                             <h3 class="mb-0">References and Acknowledgements</h3>
                             <p></p>
                             <ul>
+                                <li>This <a href="https://community.st.com/t5/imaging-sensors/vl53l1x-xshut-pin/td-p/101168">forum</a> on XSHUT pins</li>
+                                <li>Jeffery Cai for catching my silly mistakes</li>
                                 <li><a href="https://ns14.github.io/lab3">Nidhi Sonwalker's website</a></li>
                                 <li><a href="https://fast.synthghost.com/lab-3-time-of-flight/">Stephan Wagner's website</a></li>
                             </ul>
