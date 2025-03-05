@@ -47,41 +47,131 @@
             <!--Lab 3-->
             <section class="resume-section" id="lab3">
                 <div class="resume-section-content">
-                    <h2 class="mb-5">Lab 3: Time of Flight Sensor</h2>
+                    <h2 class="mb-5">Lab 4: Motor Driver & Open Loop Control</h2>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
 
                             <!--Prelab-->
                             <h3 class="mb-0">Prelab</h3>
                             <p></p>
-                            <p>Writeup</p>
-
-                            <script src="https://gist.github.com/ysadrienne/eb450512b815b685635104a54744cd05.js"></script>
-                            <img src="assets/img/lab2/calibration.jpg" alt="..." class="center"/>
+                            <p>Below is the wiring diagram of my circuit. I followed the instructions to parallel-couple the input and output pins on the motor driver, allowing each motor to receive twice the current without overheating. 
+                                To achieve this, I used different wiring techniques depending on the pin placement. For the inner pins, I stripped a single wire long enough to pass through both pins before soldering them together. 
+                                For the outer pins, I initially used a small jumper to bridge the two connections, then inserted another wire into one of the pins to link it to the Artemis. 
+                                While this method worked well for the input pins, I ran into issues with the output pins, which kept shorting when connected to the motor. 
+                                To resolve this, I soldered separate wires to each output pin, then joined them at the motor, covering the exposed connections with heat shrink for insulation.
+                                I used solid-core wires as jumpers for easier soldering, but made sure to use stranded core wires for long connections so there is less risk of the wires breaking from twisting.</p>
+                            <p>For inputs to the motor drivers, I decided to use pins <code>0</code>, <code>1</code>, <code>3</code>, and <code>4</code> as they support PWM.</p>
+                            <img src="assets/img/lab4/circuit.jpg" alt="..." class="center"/>
+                            <p>In addition to the 3.7V battery powering the Artemis, I soldered another 3.7V battery to the motor drivers to minimize noise and ensure that fluctuations in current draw from the motors wouldn’t affect the Artemis.
+                                I used an 850 mAh battery for the motors, as they require more current, while the Artemis is powered by a 650 mAh battery.</p>
 
                             <!--Task 1-->
-                            <h3 class="mb-0">Task 1:</h3>
+                            <h3 class="mb-0">Tasks 1 & 2: PWM Signal Testing</h3>
                             <p></p>
-                            <p>Writeup</p>
+                            <p>Before fully integrating the motor drivers into the car, I tested them using Arduino's <code>analogWrite()</code> function.
+                                I soldered the <code>GND</code> pin of the driver to one of the ground pins on the Artemis, connected the <code>IN</code> pins to pins <code>3</code> and <code>4</code> on the Artemis, then wired the <code>Vin</code> pin to the DC power supply.
+                                I hooked up the output pins of the motor driver to the oscilloscope to see the resulting signals.</p>
+
+                            <script src="https://gist.github.com/ysadrienne/4f38b77e2c9409798b033431a126204e.js"></script>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/2_SAu-jxEF8?si=WaUzsyPb4B6pqYDS" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <p>Below is a snapshot of the oscilloscope showing the signal.</p>
+                            <img src="assets/img/lab4/pwm.jpg" alt="..." class="center"/>
+                            <p></p>
+
+                            <!--Tasks 3 & 4-->
+                            <h3 class="mb-0">Tasks 3 & 4: Motor Driver Testing</h3>
+                            <p></p>
+                            <p>To test whether the motor drivers were properly driving the motors, I soldered the output pins of the motor drivers onto the motors. 
+                                This is where I had a lot of trouble - the two sets of output pins kept shorting, forcing me to repeatedly desolder and resolder, which ended up taking the most time in this lab. </p>
+                            <p>The code I used to test the motor drivers was very simple: I made the motors spin forward for 2 seconds, then reverse for 2 seconds, and stop for 2 seconds within the main loop. 
+                                I set the PWM value to 200 instead of maxing out at 255, ensuring the car wouldn’t move excessively, especially since it was positioned on its side and not stable.
+                            </p>
+                            <p>Below is a video testing the right wheels. A DC power supply was used to power the motor driver.</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/fvZ3ITHN2Wg?si=aBuWGMrCeGlLmDvh" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <p>Below is a video testing the left wheels.</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/K_qsj9LsFnM?si=LmlQbtHIik_cX6gq" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <p>Below is the code used for testing. I commented out parts for each side.</p>
+                            <script src="https://gist.github.com/ysadrienne/941a88190e0aa1fbbae82b8ef5dac398.js"></script>
+
+                            <!--Task 5 & 6-->
+                            <h3 class="mb-0">Tasks 5 & 6: Connecting Batteries</h3>
+                            <p></p>
+                            <p>After testing each motor driver powered by a DC supply, I soldered the battery leads to the <code>Vin</code> and <code>GND</code> pins of the motor drivers so I can use a 3.7V battery to supply power.
+                                I tested the car with the same code I used above.
+                            </p>
+
+                            <p>Below is a video testing the right wheels. A 3.7V battery was used to power the motor driver.</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rc7v3OioVs?si=qLzQfFSoWabeu6a8" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <p>Below is a video testing the left wheels.</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/LSiYGccmNx0?si=VxIZVMHgpm02hFyr" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+
+                            <!--Task 7-->
+                            <h3 class="mb-0">Task 7: Assembly</h3>
+                            <p></p>
+                            <p>Below is a picture of my fully assembled car (for now). I tied the Artemis and the 650 mAh battery with a zip tie and placed it in the compartment where the original PCB was placed.
+                                I tucked the two motor drivers to the side of the compartments, attached the cross connector at the center of the car, and the IMU towards the front.
+                                I attached the two ToF sensors to the front and back of the car. I used Sticky tack as temporary measures, but as we move on, I plan on using more secure adheseves like electrical tape once I am set on the component placements.
+                            </p>
+                            <img src="assets/img/lab4/car.jpg" alt="..." class="center"/>
+                            <p></p>
+
+                            <!--Task 8-->
+                            <h3 class="mb-0">Task 8: PWM Lower Limit</h3>
+                            <p></p>
+                            <p>I found out that for my car (specifically in Upson 264), the lowest PWM value required for it to start moving was 35. Starting at 150, I gradually tested lower values until I found the smallest one that still allowed the car to move.
+                                After finding the value, I realized could have used a bluetooth command to change values instead of burning code into the Artemis every time.
+                            </p>
+
+                            <!--Task 9-->
+                            <h3 class="mb-0">Task 9: Calibration</h3>
+                            <p></p>
+                            <p>After letting the car drive forward for about 1.5 seconds at max speed (255 for both motor drivers), I noticed  that the car turned slightly to the left, meaning I had to reduce the PWM value for the right motor driver to balance the movement.
+                                I tried several values, and found that setting the right motor to 237 while keeping the left motor at 255 resulted in the car moving in a straight line.
+                            </p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/PXZAGGxZiu8?si=ErgGeuuQpFE7H9I7" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
                     
+                            <!--Task 10-->
+                            <h3 class="mb-0">Task 10: Open Loop Control</h3>
+                            <p></p>
+                            <p>This is a little demo of my car driving!</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/TRNI7jPtKA8?si=sspyXehIaCaI5Y85" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <p>Below is the code I used to implement this open-loop control. In future labs, I plan to create functions for the car’s movements, such as going straight, backward, and turning, to make the code more concise and easier to manage.</p>
+                            <p>I added a timer so that the car drives for 1710 ms then comes to a stop. I added comments to describe the motion.</p>
+                            <script src="https://gist.github.com/ysadrienne/d04c511f1008f441c3b128a343c23414.js"></script>
+
                             <!--Discussion-->
                             <h3 class="mb-0">Discussion</h3>
                             <p></p>
-                            <p>Writeup</p>
+                            <p>This lab required a lot of patience, mainly because I was inexperienced in soldering. However, I really enjoyed it since it was my first time working with this much hardware.</p>
 
                             <!--References and Acknowledgements-->
                             <h3 class="mb-0">References and Acknowledgements</h3>
                             <p></p>
                             <ul>
-                                <li>Evan Leong, Jeffery Cai, Steven Sun for being a personal TA for a lost mechE student, despite being students themselves</li>
-                                <li>Jeffery and Steven again for helping me immensely with the complementary filter implementation</li>
-                                <li>Jeffery for filming me trying to drive the car</li>
-                                <li>Lecture slides and code</li>
-                                <li>Farrell for answering my questions</li>
+                                <li>Jeffery Cai for helping with filming</li>
+                                <li>TAs for answering my questions</li>
                                 <li><a href="https://nila-n.github.io/Lab1b.html">Nila Narayan's website</a></li>
-                                <li><a href="https://learn.adafruit.com/calibrating-sensors/two-point-calibration">Adafruit forum</a> for two point callibration</li>
-                                <li>ChatGPT for correcting grammar and spelling errors</li>
-                                <li><a href="https://startbootstrap.com/theme/resume">Bootstrap template for website</a></li>
                             </ul>
                         </div>
 
