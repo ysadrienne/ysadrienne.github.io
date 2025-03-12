@@ -47,39 +47,102 @@
             <!--Lab 3-->
             <section class="resume-section" id="lab3">
                 <div class="resume-section-content">
-                    <h2 class="mb-5">Lab 3: Time of Flight Sensor</h2>
+                    <h2 class="mb-5">Lab 5: Linear PID Control & Linear Interpolation</h2>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
 
                             <!--Prelab-->
                             <h3 class="mb-0">Prelab</h3>
                             <p></p>
-                            <p>Writeup</p>
+                            <p>Before starting the lab, I decided to implement a system for easier debugging using Artemis and Python as advised by the handout. 
+                                To streamline the process, I created Bluetooth commands that initiate PID control, adjust gain values, and transmit data. 
+                                This eliminates the need to repeatedly burn code onto the Artemis, making debugging more efficient. 
+                            </p>
+                            <p>In my Artemis code, I created <code>PID_ON</code>, a boolean variable, ensuring that the PID calculation in the main loop begins only when <code>PID_ON</code> is set to <code>true</code>.
+                                By default, <code>PID_ON</code> is initialized as <code>false</code>, and when the <code>START_PID</code> command is sent to the robot, it toggles <code>PID_ON</code> to <code>true</code>.
+                                Below shows my main loop for P control, and a few helper functions for driving my robot.</p>
+                            <script src="https://gist.github.com/ysadrienne/d6f988384c70fe14a7a89916c8c30206.js"></script>
+                            <script src="https://gist.github.com/ysadrienne/f8af06941c8edaeb2533db93c0ea5988.js"></script>
+                            <p>Below is the Python command I used to adjust the gain, allowing me to modify the values directly in Jupyter Notebook and send them via BLE. Other commands simply call functions without requiring additional input.</p>
+                            <img src="assets/img/lab5/changegain.jpg" alt="..." class="center"/>
+                            <p>* I realized I didn't add my calibration factor in Lab 4 writeup. <code>calib = 0.92</code> found experimentally.</p>
 
-                            <script src="https://gist.github.com/ysadrienne/eb450512b815b685635104a54744cd05.js"></script>
-                            <img src="assets/img/lab2/calibration.jpg" alt="..." class="center"/>
-
-                            <!--Task 1-->
-                            <h3 class="mb-0">Task 1:</h3>
+                            <!--Position Control-->
+                            <h3 class="mb-0">Position Control</h3>
                             <p></p>
-                            <p>Writeup</p>
+                            <p>Disclaimer: I had a lot of trouble with BLE connection after creating too many folders and virtual environments, so if any of the future students happen to be reading this, just add more code to ones that work already to ensure your code doesn't break.</p>
+                            <p>I decided to start with a slow and simple P controller. As seen in the main loop above, I first start the ToF sensor when connected. 
+                                Then, when <code>PID_ON</code> is toggled to <code>true</code>, and while control is on, error is calculated, then multiplied to the gain value Kp to calculate motor input.
+                                It then uses the error value to drive the robot forward if error is positive, or backward if error is negative. I also made sure to add a hard stop using a timer in case my commands fail, and to stop control when data storage is full.</p>
+
+                            <p>For the demo and plots below, I set my maximu PWM value <code>PWM_MAX</code> to 150 and Kp gain to 0.03 to prevent the robot from crashing into the wall so that I can verify my controller works.</p>
+                            <p></p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/oldCRwn_aNg?si=EVSQoTa_hlNlfoHP" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <p>This plot shows the change in input to the motor over time.</p>
+                            <img src="assets/img/lab5/motorinput.jpg" alt="..." class="center"/>
+                            <p>This plot shows the distance measured by the ToF sensors over time, where the red line is the goal (304 mm away from the wall). We can see that the controller is actually really good for moderate conditions, with very little steady state error.</p>
+                            <img src="assets/img/lab5/tof.jpg" alt="..." class="center"/>
+                            <p></p>
+                            
+                            <p>This is a video for Kp = 0.03, 4 ft away from the wall.</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/u0qgPAMT0Go?si=qj9s7B_csC7F5Zvv" title="YouTube video player" 
+                            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+
+                            <p>This is a video for Kp = 0.03, 8 ft away from the wall.</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/L3LkrY9T9pA?si=ELr5KO12ahK37Enk" title="YouTube video player" 
+                            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+
+                            <p>But our class is called Fast Robots, not Average Robots. To tackle this, I wanted to add derivative control so that I can speed up my robot without crashing it into the wall.
+                                The time is 4:57 am, so I don't think I will be able to do this for now.
+                            </p>
+                            
+                            <a href="https://en.wikipedia.org/wiki/Moose" target="_blank">
+                                <img src="assets/img/misc/MOOSE.png" alt="Button" style="width: 40px; height: auto; border: none;">
+                            </a>
+
+                            <!--Extrapolation-->
+                            <h3 class="mb-0">Extrapolation</h3>
+                            <p></p>
+                            <p>I measured the execution frequency of the main loop and found that it runs 1,171 times over 2 seconds, which corresponds to approximately 585 Hz.
+                                Similarly, I tracked the ToF sensor updates and recorded 23 data sets within 2 seconds, indicating a ToF sampling frequency of 11.5 Hz. 
+                                This significant difference in sampling rates slows down the entire loop since PID calculations currently execute only when new ToF data is available.
+                                To improve efficiency, I can use the ToF measurements to extrapolate the robot's position, allowing the system to perform calculations at a higher frequency rather than waiting for new sensor data. 
+                            </p>
+                            <p>I first decoupled the ToF and the control loop by taking out controller calculations outside the <code>if</code> statement checking if <code>PID_ON</code> is true.
+                                I created two separate arrays of which one contains only ToF data (therefore smaller array), and the other contains control data.
+                                Then, I added helper functions to calculate the estimated distance by multiplying the time difference and the slope of previous readings and adding to the previous distance, and to calculate control using this value. 
+                                Below are the helper functions used.</p>
+                            <script src="https://gist.github.com/ysadrienne/2f5fedb57a768f2535947a476116a56d.js"></script>
+                            <p>Below is how I decoupled ToF and Control loop.</p>
+                            <script src="https://gist.github.com/ysadrienne/dfa7d213adb871a1a783eef13aaaa0d3.js"></script>
+                            <p>Below is my attempt to plot raw and extrapolated ToF data. The step-like plot shows that decoupling was a success, but for some reason my extrapolated data was the same as my raw data.
+                                The issue seems to be the extrapolated data not updating properly, as the data for raw and extrapolated were the same when I printed them for debugging.
+                            </p>
+                            <img src="assets/img/lab5/extrap.jpg" alt="..." class="center"/>
                     
                             <!--Discussion-->
                             <h3 class="mb-0">Discussion</h3>
                             <p></p>
-                            <p>Writeup</p>
+                            <p>This lab was my first time trying to implement PID control in real life. Although I was only able to do P control in time, it was really interesting to see something I've only leanrned in theory happening in real life.
+                                Getting the system to work was a huge struggle for me because I had a lot of issued in terms of coding, and I was not able to accomplish everything I wanted to, but I think at least I have a really good understanding of everything, having spent so much time on this lab. 
+                            </p>
 
                             <!--References and Acknowledgements-->
                             <h3 class="mb-0">References and Acknowledgements</h3>
                             <p></p>
                             <ul>
-                                <li>Evan Leong, Jeffery Cai, Steven Sun for being a personal TA for a lost mechE student, despite being students themselves</li>
-                                <li>Jeffery and Steven again for helping me immensely with the complementary filter implementation</li>
-                                <li>Jeffery for filming me trying to drive the car</li>
-                                <li>Lecture slides and code</li>
-                                <li>Farrell for answering my questions</li>
+                                <li>Ben Liao, Jeffery Cai, and Evan Leong for being a personal TA</li>
+                                <li>Sophia Lin for helping me debug, finding my mistakes</li>
+                                <li>Farrell for answering my numerous questions</li>
                                 <li><a href="https://nila-n.github.io/Lab1b.html">Nila Narayan's website</a></li>
-                                <li><a href="https://learn.adafruit.com/calibrating-sensors/two-point-calibration">Adafruit forum</a> for two point callibration</li>
+                                <li><a href="https://fast.synthghost.com/lab-5-linear-pid-control/">Stephan Wagner's website</a></li>
                                 <li>ChatGPT for correcting grammar and spelling errors</li>
                                 <li><a href="https://startbootstrap.com/theme/resume">Bootstrap template for website</a></li>
                             </ul>
