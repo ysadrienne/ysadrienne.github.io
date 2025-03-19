@@ -47,44 +47,104 @@
             <!--Lab 3-->
             <section class="resume-section" id="lab3">
                 <div class="resume-section-content">
-                    <h2 class="mb-5">Lab 3: Time of Flight Sensor</h2>
+                    <h2 class="mb-5">Lab 6: Orientation PID</h2>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
 
                             <!--Prelab-->
                             <h3 class="mb-0">Prelab</h3>
                             <p></p>
-                            <p>Writeup</p>
+                            <p>Before starting lab 6, I wanted to have a working PD controller so I worked on that first. I created a class called <code>PIDController</code> and <code>LowPassFilter</code> to declutter my main code, which can be found in the appendix below. Thanks Jeffery for helping me with this!
+                                There were a lot of changes to my code from the previous lab, as my lab 5 was quite unsatisfactory (I probably should have used an extension). 
+                                Like the previous lab, I set up bluetooth commands to change gains, start and stop PID control for orientation, then send over the data. 
+                                I also added a command to change the setpoint angle, so that I can change the goal angle while the controller is running. Below are some code snippets showing how I setup my notification handler and commands.</p>
+                            <img src="assets/img/lab6/bluetooth.jpg" alt="..." class="center"/>
+                            <script src="https://gist.github.com/ysadrienne/9a8c6342613972789013d07952433820.js"></script>
 
-                            <script src="https://gist.github.com/ysadrienne/eb450512b815b685635104a54744cd05.js"></script>
-                            <img src="assets/img/lab2/calibration.jpg" alt="..." class="center"/>
-
-                            <!--Task 1-->
-                            <h3 class="mb-0">Task 1:</h3>
+                            <!--PID Input Signal-->
+                            <h3 class="mb-0">PID Input Signal</h3>
                             <p></p>
-                            <p>Writeup</p>
+                            <p>While deciding on what method to use to get the yaw value from the gyroscope, I remembered from lecture that we cannot implement complementary filter to mitigate drift for yaw since there is no acceleromoter data for it.
+                                I also saw in lab 2 that my drift on the IMU was not negligible as integrating gyroscope data over time accumulates error, so I decided to follow <a href="https://fastrobotscornell.github.io/FastRobots-2025/tutorials/dmp.html">Stephan Wagner's extremely-easy-to-understand-and-follow tutorial</a> to use the DMP instead.
+                                Code setup for DMP implementation can be found below in the appendix.
+                            </p>
+                            <p>The datasheet for our IMU states that the maximum spin rate of the gyroscope is 250 dps. This isn't sufficient for our case, since the robot can clearly make multiple rotations within a second.
+                                We can change the sensitivity of the gyroscope using different ranges, like in the screenshot below.
+                            </p>
+                            <img src="assets/img/lab6/gyrorange.jpg" alt="..." class="center"/>
+
+                            <!--Derivative Term-->
+                            <h3 class="mb-0">Derivative Term</h3>
+                            <p></p>
+                            <p>The PID controller computes the derivative of the yaw angle to determine the D-term. If yaw were obtained purely by integrating raw gyroscope data, this approach could introduce unnecessary noise, as gyroscopes tend to accumulate drift over time. 
+                                The integration process would amplify small measurement errors, leading to an unstable or unreliable derivative term.
+                                However, as the yaw value from the DMP is a sensor-fused estimate that combines information from the gyroscope, accelerometer, and magnetometer to correct for drift and improve accuracy, the yaw value from the DMP is more stable and less prone to accumulating long-term errors.
+                                Since the DMP-provided yaw is a processed and corrected signal, differentiating it to compute the derivative term makes sense. The derivative of this filtered signal will be a more reliable estimate of angular velocity compared to using raw gyroscope readings alone, which can be noisy and subject to bias.</p>
+                            <p>Changing the setpoint during while running the robot will cause derivative kick, as there is a large instantaneous change in the error value. 
+                                This can be handled using a low pass filter.</p>
                     
-                            <!--Discussion-->
-                            <h3 class="mb-0">Discussion</h3>
+                            <!--Programming Implementation-->
+                            <h3 class="mb-0">Programming Implementation</h3>
                             <p></p>
-                            <p>Writeup</p>
+                            <p>I added <code>Serial.print</code> statements to track the execution of the main loop, printing  <code>"IMU Data Ready"</code> on each iteration, along with the measured IMU data. This allowed me to compare the loop speed with the IMU sampling rate.
+                                From the output, I observed that for every IMU data update, the main loop iterates approximately 8 to 9 times. By printing <code>millis()</code>, I found that the main loop runs at around 330 Hz, while IMU updates at 19 Hz.
+                                Although there is a slight difference between the two rates, it is negligible compared to the much slower sampling rate (about 1/50 of the main loop rate) of the time of flight sensor. Given this small discrepancy, I decided not to decouple the IMU data collection from the main loop for this lab.</p>
+                            <img src="assets/img/lab6/looprate.jpg" alt="..." class="center"/>
+                            <p></p>
+                            <p>Below is a video of the robot using P control with Kp = 0.7, tested while suspended in the air. It cam be seen that the wheel turns in the correct direction to restore its original position.</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/ot_T6Yojlkw?si=pg-NWB-z82z1qPrA" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <p>My Kp and Kd values were chosen experimentally. When testing on the floor, P control alone proved insufficient. With Kp < 0.5, the robot couldn’t overcome friction and failed to move, but with Kp > 0.6, there was too much overshoot causing the robot to continuously spin in one direction.
+                                So I added a small D term and it fixed the problem!</p>
+                            <p></p>
+                            <p>Below is a video of my orientation control with values Kp = 0.6, Kd = 0.02.</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/CTrnaLdK_-U?si=8jAoHyNoFyxscMlD" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <p>Below are plots of my PD controller, with the first one where the setpoint is set to 0˚, and the second one where the setpoint is changed to 45˚ halfway.</p>
+                            <img src="assets/img/lab6/yawpdzero.jpg" alt="..." class="center"/>
+                            <img src="assets/img/lab6/yawpdchange.jpg" alt="..." class="center"/>
+                            <p>This is a video of the second scenario, where I change the setpoint!</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/RkncRIzm6HU?si=-IYRt5K_ZM31hdAQ" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <p>I almost forgot to add the plot showing PWM values.</p>
+                            <img src="assets/img/lab6/pwm.jpg" alt="..." class="center"/>
+                            <p></p>
+                            <p>Below is the corresponding Yaw vs. time graph.</p>
+                            <img src="assets/img/lab6/yaw.jpg" alt="..." class="center"/>
+                            <p></p>
+                            <p>Something I would like to work on is implementing I control with windup, so I have a full PID controller working.</p>
+
+                            <!--Appendix-->
+                            <h3 class="mb-0">Appendix</h3>
+                            <p></p>
+                            <ul>
+                                <li>PID Controller Class</li>
+                                <script src="https://gist.github.com/ysadrienne/2a6ccd5eb9674a83b5c065b603f1faf1.js"></script>
+                                <li>Low Pass Filter</li>
+                                <script src="https://gist.github.com/ysadrienne/0b97025f2ebde6ccb707a335ea6141b6.js"></script>
+                                <li>DMP Code setup</li>
+                                <script src="https://gist.github.com/ysadrienne/50d4727e2e7c007f38a1e3a18aa52781.js"></script>
+                                <li>Yaw Calculation using DMP</li>
+                                <script src="https://gist.github.com/ysadrienne/3b30f632ee9f80b92a954c29a6f48dc6.js"></script>
+                            </ul>
 
                             <!--References and Acknowledgements-->
                             <h3 class="mb-0">References and Acknowledgements</h3>
                             <p></p>
                             <ul>
-                                <li>Evan Leong, Jeffery Cai, Steven Sun for being a personal TA for a lost mechE student, despite being students themselves</li>
-                                <li>Jeffery and Steven again for helping me immensely with the complementary filter implementation</li>
-                                <li>Jeffery for filming me trying to drive the car</li>
-                                <li>Lecture slides and code</li>
-                                <li>Farrell for answering my questions</li>
-                                <li><a href="https://nila-n.github.io/Lab1b.html">Nila Narayan's website</a></li>
+                                <li>Jeffery Cai and Evan Leong for being a personal TA. Always helping me debug, and for Jeffery, also never forgetting to make fun of me.</li>
                                 <li><a href="https://learn.adafruit.com/calibrating-sensors/two-point-calibration">Adafruit forum</a> for two point callibration</li>
-                                <li>ChatGPT for correcting grammar and spelling errors</li>
+                                <li>Stephan Wagner's website</li>
+                                <li>ChatGPT for correcting grammar and spelling errors & helping with debug steps</li>
                                 <li><a href="https://startbootstrap.com/theme/resume">Bootstrap template for website</a></li>
                             </ul>
                         </div>
-
                     </div>
                 </div>
             </section>
