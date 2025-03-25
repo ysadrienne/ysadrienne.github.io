@@ -47,20 +47,49 @@
             <!--Lab 3-->
             <section class="resume-section" id="lab3">
                 <div class="resume-section-content">
-                    <h2 class="mb-5">Lab 3: Time of Flight Sensor</h2>
+                    <h2 class="mb-5">Lab 7: Kalman Filtering</h2>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
 
-                            <!--Prelab-->
-                            <h3 class="mb-0">Prelab</h3>
-                            <p></p>
-                            <p>Writeup</p>
-
-                            <script src="https://gist.github.com/ysadrienne/eb450512b815b685635104a54744cd05.js"></script>
-                            <img src="assets/img/lab2/calibration.jpg" alt="..." class="center"/>
-
                             <!--Task 1-->
-                            <h3 class="mb-0">Task 1:</h3>
+                            <h3 class="mb-0">Task 1: Estimating Drag and Mass</h3>
+                            <p></p>
+                            <p>To estimate the drag and mass term for my state space model, I created new commands to find the rise time for a step response on my robot.
+                                The command <code>GET_DRAG_MASS</code> initiates the robot’s motion at 150 PWM (consistent with previous tests) value, and the command <code>SEND_DRAG_MASS</code> sends timestamped ToF sensor data for plotting.
+                                Below is a snippet of code in the main loop for the <code>GET_DRAG_MASS</code> command. Similar to code for previous labs, the command sets a flag <code>GET_DRAG_ON</code> to true to allow the robot to start driving.</p>
+                                <script src="https://gist.github.com/ysadrienne/2e6049e9d875e8cc8b3cdb90ae4726b4.js"></script>
+                            <p>From the collected data, I found that the robot reached 90% of its steady-state speed in approximately 1.288 seconds. Using this rise time and velocity, I calculated the drag coefficient and mass of the system. </p>
+                            <img src="assets/img/lab7/motorintime.jpg" alt="..." class="center"/>
+                            <img src="assets/img/lab7/toftime.jpg" alt="..." class="center"/>
+                            <img src="assets/img/lab7/speedtime.jpg" alt="..." class="center"/>
+                            <img src="assets/img/lab7/dmcalc.jpg" alt="..." class="center"/>
+                            <p>d: 0.370, m: 0.207</p>
+
+                            <!--Task 2-->
+                            <h3 class="mb-0">Task 2: Initializing Kalman Filter</h3>
+                            <p></p>
+                            <p>The code below shows the initialization of the Kalman Filter. Using the d and m values I found in step 1, I defined my A and B matrices. 
+                                Then, with the dimensions of my state space and sampling time (0.1s per ToF sensor measurement), I calculated the discretized Ad and Bd matrices which will be used in the filter.</p>
+                            <p>My C matrix and x vector are both positive, because sensor measurement and defined robot position are consistent.</p>
+                            <script src="https://gist.github.com/ysadrienne/3d085af42fcd13446f6057c7dfa65662.js"></script>
+                            <p>In a Kalman Filter, σ1 (position uncertainty) and σ2 (velocity uncertainty) influence how much trust is placed in sensor readings, while σ3 (sensor noise uncertainty) determines how much the filter relies on the model instead of raw measurements.
+                                This means increasing σ1 and σ2 increases trust in sensor readings and therefore reactivity to new measurements, and increasing σ3 puts more trust in the model, smoothing out noise but potentially lagging. 
+                                Accordingly, Σu corresponds to the confidence in the filer, and Σz corresponds to the confidence in measurement.</p>
+                            <p>σ1 and σ2 were calculating using the equation provided in lecture, where I took the square root of 100 divided by the sampling time (0.095s). For σ3, I used the ranging error given in the data sheet after tryring an arbitraty number.</p>
+                            <script src="https://gist.github.com/ysadrienne/105793928e333025327a1143e36e687a.js"></script>
+
+                            <!--Task 3-->
+                            <h3 class="mb-0">Task 3: Implementing and testing Kalman Filter in Jupyter</h3>
+                            <p></p>
+                            <p>Then, using the code provided in lecture, I implemented the filter to test on the robot.</p>
+                            <script src="https://gist.github.com/ysadrienne/39c28c50b98fb49803ff7cfc5be33bd2.js"></script>
+                            <p>The plots below show the result of moving the car back in forth in front of a wall.</p>
+                            <img src="assets/img/lab7/sig345.jpg" alt="..." class="center"/>
+                            <img src="assets/img/lab7/sig320.jpg" alt="..." class="center"/>
+                            <p>We can see that for a lower σ3 value, the KF filter data more closely follows the ToF data.</p>
+
+                            <!--Task 4-->
+                            <h3 class="mb-0">Task 4: Implementing Kalmal Filter on Robot</h3>
                             <p></p>
                             <p>Writeup</p>
                     
@@ -73,18 +102,13 @@
                             <h3 class="mb-0">References and Acknowledgements</h3>
                             <p></p>
                             <ul>
-                                <li>Evan Leong, Jeffery Cai, Steven Sun for being a personal TA for a lost mechE student, despite being students themselves</li>
-                                <li>Jeffery and Steven again for helping me immensely with the complementary filter implementation</li>
-                                <li>Jeffery for filming me trying to drive the car</li>
                                 <li>Lecture slides and code</li>
-                                <li>Farrell for answering my questions</li>
-                                <li><a href="https://nila-n.github.io/Lab1b.html">Nila Narayan's website</a></li>
-                                <li><a href="https://learn.adafruit.com/calibrating-sensors/two-point-calibration">Adafruit forum</a> for two point callibration</li>
+                                <li><a href="https://fast.synthghost.com/lab-7-kalman-filter/">Stephan Wagner's website</a></li>
+                                <li><a href="https://pages.github.coecis.cornell.edu/dak267/dak267.github.io/">Daria Kot's website</a></li>
                                 <li>ChatGPT for correcting grammar and spelling errors</li>
                                 <li><a href="https://startbootstrap.com/theme/resume">Bootstrap template for website</a></li>
                             </ul>
                         </div>
-
                     </div>
                 </div>
             </section>
