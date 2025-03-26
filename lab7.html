@@ -91,21 +91,23 @@
                             <!--Task 4-->
                             <h3 class="mb-0">Task 4: Implementing Kalmal Filter on Robot</h3>
                             <p></p>
-                            <p>Writeup</p>
-                    
-                            <!--Discussion-->
-                            <h3 class="mb-0">Discussion</h3>
-                            <p></p>
-                            <p>Writeup</p>
+                            <p>Lastly, I implemente the filter on the robot. First, I installed the <code>BasicLinearAlgebra</code> library on Arduino. 
+                                I then initialized my matrices using the values found in previous steps.</p>
+                            <script src="https://gist.github.com/ysadrienne/f149e25708c543618abbf73f9790d65a.js"></script>
+                            <p>Then I created a function <code>kalman_filter</code> and replaced the code in my main loop using extrapolated data with the Kalman Filter data.</p>
+                            <script src="https://gist.github.com/ysadrienne/3db2da1a8020ab8d746f18f81af66c24.js"></script>
+                            <p>Below is a plot of my robot, with Kp = 0.07, Ki = 0.0001, Kd = 0.04!</p>
+                            <img src="assets/img/lab7/pidkf.jpg" alt="..." class="center"/>
 
                             <!--References and Acknowledgements-->
                             <h3 class="mb-0">References and Acknowledgements</h3>
                             <p></p>
                             <ul>
                                 <li>Lecture slides and code</li>
+                                <li>Ethan Sarpong for helping me fix my PID control!</li>
                                 <li><a href="https://fast.synthghost.com/lab-7-kalman-filter/">Stephan Wagner's website</a></li>
                                 <li><a href="https://pages.github.coecis.cornell.edu/dak267/dak267.github.io/">Daria Kot's website</a></li>
-                                <li>ChatGPT for correcting grammar and spelling errors</li>
+                                <li>ChatGPT for correcting grammar and spelling errors, helping with debugging</li>
                                 <li><a href="https://startbootstrap.com/theme/resume">Bootstrap template for website</a></li>
                             </ul>
                         </div>
