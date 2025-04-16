@@ -44,44 +44,88 @@
         </nav>
         <!-- Page Content-->
         <div class="container-fluid p-0">
-            <!--Lab 3-->
+            <!--Lab 9-->
             <section class="resume-section" id="lab3">
                 <div class="resume-section-content">
-                    <h2 class="mb-5">Lab 3: Time of Flight Sensor</h2>
+                    <h2 class="mb-5">Lab 9: Mapping</h2>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-
-                            <!--Prelab-->
-                            <h3 class="mb-0">Prelab</h3>
-                            <p></p>
-                            <p>Writeup</p>
-
-                            <script src="https://gist.github.com/ysadrienne/eb450512b815b685635104a54744cd05.js"></script>
-                            <img src="assets/img/lab2/calibration.jpg" alt="..." class="center"/>
-
+                           
                             <!--Task 1-->
-                            <h3 class="mb-0">Task 1:</h3>
+                            <h3 class="mb-0">Task 1: Orientation Control</h3>
                             <p></p>
-                            <p>Writeup</p>
-                    
-                            <!--Discussion-->
-                            <h3 class="mb-0">Discussion</h3>
+                            <p>I chose to use orientation control for this lab, because I felt ToF data taken would be more accurate when the robot is stationary.
+                                The video below shows a 360˚ turn of the robot with Kp = 5, Ki = 0.05, Kd = 1.5, mostly on axis. I used higher gains for this lab because there was a lot more friction to overcome.</p>
+
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/X1zTcHziTf4?si=bw9wm9WrKQuDCYxW" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            
+                            <h4 class="mb-0">Errors</h3>
                             <p></p>
-                            <p>Writeup</p>
+                            <p>In the video above, the robot was about 2.5 inches drifted from its original position after a 360˚ turn. I found out that the robot strays between 1.5 to 2.5 inches (38 to 64mm) per one revolution.
+                                The datasheet for the ToF sensor shows that the ranging error in long mode is ± 20 mm in long mode. I decided to calculate the RSS to quantify the error.
+                                Using 64mm for maximum position error and 51mm for average position error, with 20mm for the ToF error, RSS_avg = 54.8, RSS_max = 67.
+                                This means, in a 4m x 4m square room, average error would be  2.74% of 2000, and maximum error would be 3.35% of 2000.</p>
+                            <p>The yaw values measured by the DMP on the IMU had negligible drift for one rotation, therefore wasn't included in the RMS calculation.
+                                Additionally, before starting each scan, I made sure to restart the robot so drift doesn't accumulate.</p>
+                            
+                            <p>Below is the PID plot for the 360˚ rotation.</p>
+                            <img src="assets/img/lab9/pid_turn.png" alt="..." class="center"/>
+
+                            <!--Task 2-->
+                            <h3 class="mb-0">Task 2: Reading Distances</h3>
+                            <p></p>
+                            <p>Below is the code I used for mapping. Similar to lab 8, I created a sequence of 3 states, where the robot turns, stops orientation PID when it reaches the desired angle,
+                                stops for 750 ms to collect distance data using the ToF sensor and updating the next desired angle.</p>
+                                <script src="https://gist.github.com/ysadrienne/c762291bf5a4e83876b08c07873941c9.js"></script>
+                            <p></p>
+
+                            <p><b>*DISCLAIMER*</b> The world I mapped was not ideal, as it was not a completely closed off space and consisted many gaps and cables between the floor and obstacles.
+                                This caused a lot of noise and inconsistent data resulting in a messy final plot, but I am fairly confident that it works as intended.
+                            </p>
+                            <p>This is what my 'world' looked like 😃</p>
+                            <p>I defined the left end of the ruler as the origin (0, 0).</p>
+                            <img src="assets/img/lab9/world1.jpg" alt="..." class="center"/>
+                            <p></p>
+                            <p>This photo is to show the open space outside the world that made the plot very messy.</p>
+                            <img src="assets/img/lab9/world2.jpg" alt="..." class="center"/>
+                            <p></p>
+
+                            <h4 class="mb-0">Transformation</h3>
+                                <p></p>
+                                <p>To convert the polar plots to the global reference, I used a matrix transformation, where </p>
+                                <img src="assets/img/lab9/matrix.jpg" alt="..." class="center"/>
+                                <p></p>
+
+                            <p>I placed the robot at 4 different points: </p>
+                            <p>Point 1: (-1, 1)</p>
+                            <img src="assets/img/lab9/point1polar.jpg" alt="..." class="center"/>
+                            <img src="assets/img/lab9/point1real.jpg" alt="..." class="center"/>
+                            <p>Point 2: (2, 0)</p>
+                            <img src="assets/img/lab9/point2polar.jpg" alt="..." class="center"/>
+                            <img src="assets/img/lab9/point2real.jpg" alt="..." class="center"/>
+                            <p>Point 3: (1.5, -1)</p>
+                            <img src="assets/img/lab9/point3polar.jpg" alt="..." class="center"/>
+                            <img src="assets/img/lab9/point3real.jpg" alt="..." class="center"/>
+                            <p>Point 4: (0, -1)</p>
+                            <img src="assets/img/lab9/point4polar.jpg" alt="..." class="center"/>
+                            <img src="assets/img/lab9/point4real.jpg" alt="..." class="center"/>
+                            
+                            <!--Task 2-->
+                            <h3 class="mb-0">Task 3: Merging & Plotting Readings</h3>
+                            <p></p>
+                            <p>Map of all real plots merged together: </p>
+                            <img src="assets/img/lab9/map.jpg" alt="..." class="center"/>
 
                             <!--References and Acknowledgements-->
                             <h3 class="mb-0">References and Acknowledgements</h3>
                             <p></p>
                             <ul>
-                                <li>Evan Leong, Jeffery Cai, Steven Sun for being a personal TA for a lost mechE student, despite being students themselves</li>
-                                <li>Jeffery and Steven again for helping me immensely with the complementary filter implementation</li>
-                                <li>Jeffery for filming me trying to drive the car</li>
-                                <li>Lecture slides and code</li>
-                                <li>Farrell for answering my questions</li>
-                                <li><a href="https://nila-n.github.io/Lab1b.html">Nila Narayan's website</a></li>
-                                <li><a href="https://learn.adafruit.com/calibrating-sensors/two-point-calibration">Adafruit forum</a> for two point callibration</li>
-                                <li>ChatGPT for correcting grammar and spelling errors</li>
-                                <li><a href="https://startbootstrap.com/theme/resume">Bootstrap template for website</a></li>
+                                <li>Jeffery for helping me debug, spending more time sighing at my terrible code than doing his own lab work</li>
+                                <li>Jeffery again for lending me his robot because mine broke, and also letting me setup a world at his place</li>
+                                <li><a href="https://startbootstrap.com/theme/resume">Ming He's website</a> for transforming plots</li>
+                                <li><a href="https://minghe98.github.io/MingFRobots.github.io/#lab9">Bootstrap template for website</a></li>
                             </ul>
                         </div>
 

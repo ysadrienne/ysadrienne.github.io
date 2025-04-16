@@ -44,7 +44,7 @@
         </nav>
         <!-- Page Content-->
         <div class="container-fluid p-0">
-            <!--Lab 3-->
+            <!--Lab 8-->
             <section class="resume-section" id="lab3">
                 <div class="resume-section-content">
                     <h2 class="mb-5">Lab 8: Stunts</h2>
@@ -54,20 +54,70 @@
                             <!--Drift-->
                             <h3 class="mb-0">Drift</h3>
                             <p></p>
-                            <p>I chose to perform a drift, since I did not want to risk breaking the robot.</p>
+                            <p>I chose to perform a drift, since I did not want to risk breaking the robot at this point. Update: haha guess what, it broke and I had to resolder a motor driver.</p>
+                            <p>Similar to previous labs, I created 3 commands: one for tuning values, one for starting the stunt, and one for sending the data. 
+                                The command <code>CHAGE_DRIFT_VAL</code> adjusts gain values as well as the turning point of the robot relative to the wall.
+                                The command <code>START_DRIFT</code> sets the goal angle to 180˚ and initiates the stunt by setting the flag <code>DRIFT_ON</code> to <code>true</code>.
+                                The command <code>SEND_DRIFT_DATA</code> sends time, distance measured by the TOF sensor, and yaw for plotting.</p>
+                            <p>Below is the code snippet inside my main loop for when <code>DRIFT_ON</code> is <code>true</code>. 
+                                The logic consists of three states. First, the robot drives forward until the TOF sensor records a value less than 1400 mm (<code>turnat</code> in snippet, can be changed using bluetooth command), then turns on orientation PID.
+                                Next, once the 180˚ turn is achieved, the end time of the turn is recorded. Last, it drives forward for another 1.5 seconds after the turn until it comes to a stop.</p>
+                            <p>The 1400 mm threshold was found experimentally. To speed up the stunt, I chose to initiate the turn while the robot is still skidding, rather than making the robot come to a complete stop before starting the turn.
+                                So, instead of braking the robot at the 3 ft mark, I decided to stop the motors earlier to allow the wheels to slide. 
+                                This way, the robot could complete the turn within 3 ft of the wall without crashing into it, and 1400 mm proved to be an effective distance for that purpose.
+                            </p>
 
+                            <script src="https://gist.github.com/ysadrienne/f0a0b86c3d4e7daecbcd0b9b1227cbdd.js"></script>
+
+                            <p></p>
+                            <p>The first video is my best attempt at executing the stunt, with Kp = 0.8, Ki = 0.01, Kd = 0.04, and the following two are some other valid attempts. I couldn't get the robot to not overshoot :( </p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/Ajty9rymdlA?si=8BjE3B648gDBSzy2" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/Al9qLBXzhto?si=pSrgYKor44Ct9qBM" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/huKipCka09w?si=whmko_UXzhlZ-fXr" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+
+                            <p>Below are ToF sensor and PID input plots for the stunt in the first video. 
+                                I stopped recording ToF distance values once it starts orientation PID so the plot show the exact distance of robot the robot from the wall before turning, but it can be seen visually in the video that it is less than 1 ft from the robot skidding.
+                                Similarly, I only recorded PID values during turning because I didn't use linear PID for driving the robot forward, therefore the 0s at the end of the plot.</p>
+                            <img src="assets/img/lab8/tofdata.jpg" alt="..." class="center"/>
+                            <img src="assets/img/lab8/yawdata.jpg" alt="..." class="center"/>   
+                            <img src="assets/img/lab8/piddata.jpg" alt="..." class="center"/>   
+                            
+                            <p>The robot was having trouble correcting its position because of friction. The left motors were a bit weaker despite the calibration, so I taped the left wheels to reduce grip and help balance out the turning, which worked pretty well!</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/X2fQy2wS-7c?si=qHmE3Ds0f3yhl2TP" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <p>Code for <code>PID_ANGLE_ON</code> can be found in the appendix in <a href="https://ysadrienne.github.io/lab6.html">Lab 6: Orientation PID</a>.</p>
+                            <p></p>
+                            <p>I had a lot of trouble with the wrap around error, so I implemented the logic below to add (or subtract) 360 to the yaw value recorded if the magnitude of the difference between two consecutive measurements bigger than 180.</p>
+                            <script src="https://gist.github.com/ysadrienne/6cac7658335f050be1fc1872ca9c38d4.js"></script>
+                            
                             <!--Blooper-->
                             <h3 class="mb-0">Blooper</h3>
                             <p></p>
+                            
                             <p>Sound on!</p>
                             <iframe width="560" height="315" src="https://www.youtube.com/embed/1Kf1ijKrp4g?si=-GO9qXwClBNDbbO-" 
                             title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                             referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
                             <p></p>
+
                             <!--References and Acknowledgements-->
                             <h3 class="mb-0">References and Acknowledgements</h3>
                             <p></p>
                             <ul>
+                                <li>Jeffery Cai for helping me as always</li>
+                                <li>Ben Liao for helping me as always</li>
+                                <li><b>SPECIAL THANKS TO THE $1 BILLION FUNDING CUT FOR MAKING ME TAKE AN EXTENSION ON THIS LAB :(</b></li>
                                 <li><a href="https://startbootstrap.com/theme/resume">Bootstrap template for website</a></li>
                             </ul>
                         </div>
