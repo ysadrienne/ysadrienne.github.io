@@ -44,43 +44,88 @@
         </nav>
         <!-- Page Content-->
         <div class="container-fluid p-0">
-            <!--Lab 3-->
+            <!--Lab 10-->
             <section class="resume-section" id="lab3">
                 <div class="resume-section-content">
-                    <h2 class="mb-5">Lab 3: Time of Flight Sensor</h2>
+                    <h2 class="mb-5">Lab 10: Localization - Simulation</h2>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
 
-                            <!--Prelab-->
-                            <h3 class="mb-0">Prelab</h3>
+                            <!--Bayes Filter-->
+                            <h3 class="mb-0">Bayes Filter</h3>
                             <p></p>
-                            <p>Writeup</p>
+                            <p>In this lab, we implement a Bayes Filter on a virtual robot to estimate its position within a simulated 2D environment.
+                                Based on the initial state, control inputs, and sensor measurements, a Bayes filter estimates the robot's position, aka belief.
+                                At each time step, the prediction step uses a motion model (odometry model for this lab) to estimate the robot's new state, which increases uncertainty.
+                                The update step then incorporates sensor measurements (sensor model for this lab) to refine the belief, reducing uncertainty.
+                            </p>
 
-                            <script src="https://gist.github.com/ysadrienne/eb450512b815b685635104a54744cd05.js"></script>
-                            <img src="assets/img/lab2/calibration.jpg" alt="..." class="center"/>
+                            <!--compute_control-->
+                            <h3 class="mb-0"><code>compute_control</code></h3>
+                            <p></p>
+                            <p><code>compute_control()</code> calculates three motion components: 
+                                the initial rotation needed to align with the movement direction (<code>delta_rot_1</code>), 
+                                the translation distance traveled (<code>delta_trans</code>), and the final rotation required to reach the current orientation (<code>delta_rot_2</code>).</p>
+                            <p>Below is a screenshot of calculation equation the taken from <a href="https://fastrobotscornell.github.io/FastRobots-2025/lectures/FastRobots2025_Lecture18_motionmodels.pdf">Lecture 18: Motion Models</a>.</p>
+                            <img src="assets/img/lab10/odom_model.jpg" alt="..." class="center"/>
+                            <script src="https://gist.github.com/ysadrienne/346e80971fe80d7d4099022f55efd423.js"></script>
+                            <p>I added another helper function <code>normalize()</code> to keep the angles in range, not realizing we were already given the function <code>normalize_angle</code> in the <code>Mapper</code> class.</p>
+                            <p></p>
 
-                            <!--Task 1-->
-                            <h3 class="mb-0">Task 1:</h3>
+                            <!--odom_motion_model-->
+                            <h3 class="mb-0"><code>odom_motion_model</code></h3>
                             <p></p>
-                            <p>Writeup</p>
-                    
-                            <!--Discussion-->
-                            <h3 class="mb-0">Discussion</h3>
+                            <p><code>odom_motion_model()</code> computes the probability of a roboot being in the orientation calculated using <code>compute_control()</code>.
+                                All parameters are calculated as Gaussian distributions with a known standard deviation <code>loc.odom_rot_sigma</code>.</p>
+                            <script src="https://gist.github.com/ysadrienne/35fd7237b47836096909cd7632c9c32f.js"></script>
                             <p></p>
-                            <p>Writeup</p>
+
+                            <!--prediction_step-->
+                            <h3 class="mb-0"><code>prediction_step</code></h3>
+                            <p></p>
+                            <p><code>prediction_step()</code> iterates over the entire grid and calculate the belief at that position and orientation from the odometery model parameters using <code>cur_odom</code> and <code>prev_odom</code>.</p>
+                            <p>As recommened in the manual, I made it so that states with probabilities less than 0.0001, an extremely small possibility, were skipped to speed up the process.
+                                There are 1944 possible states from the 12 x positions, 9 y positions, and 18 yaw positions meaning going through all previous and current states would take 3,779,136 iterations which is computationally very expensive.
+                                This also meant I had to normalize the final value before returning, since the probabilitis wouldn't sum up to 1.
+                            </p>
+                            <script src="https://gist.github.com/ysadrienne/17f518e8a132ec7706dd1300ed809340.js"></script>
+                            <p></p>
+
+                            <!--sensor_model-->
+                            <h3 class="mb-0"><code>sensor_model</code></h3>
+                            <p></p>
+                            <p><code>sensor_model()</code> calculates the probability of observations in the <code>obs[]</code> array occuring, again as a Gaussian distribution with a known standard deviation <code>loc.sensor_sigma</code>.</p>
+                            <script src="https://gist.github.com/ysadrienne/bd7f530fb1496ed5ef65fbf091d7a748.js"></script>
+                            <p></p>
+
+                            <!--update_step-->
+                            <h3 class="mb-0"><code>update_step</code></h3>
+                            <p></p>
+                            <p><code>update_step()</code> iterates over the grid for every possible state, gets new sensor measurements from <code>sensor_model()</code> and updates the belief.</p>
+                            <script src="https://gist.github.com/ysadrienne/183926136a3bd4d314499fb595bd8cd4.js"></script>
+
+                            <!--Simulation-->
+                            <h3 class="mb-0"><code>Simulation</code></h3>
+                            <p></p>
+                            <p>The red lines represent odometry data, the green lines indicate the ground truth, and the blue line shows the Bayes Filter's predicted position. Despite significant errors in the odometry data, 
+                                the Bayes Filter produces predictions that closely track the true position.</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/2uJfA9r4lzQ?si=_S1PzQN8z9hHuHQj" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <p>Below shows the comparison of the most probable state after each iteration of the filter with the ground truth pose. </p>
+                            <script src="https://gist.github.com/ysadrienne/9a3a39b3a2661056919e6a66e8df000c.js"></script>
+                            <p>I observed that the predictions are most accurate near walls compared to open spaces. 
+                                This is expected, as sensor readings tend to be more reliable when the robot is close to large obstacles, resulting in more consistent distance measurements.</p>
+                            <p></p>
 
                             <!--References and Acknowledgements-->
                             <h3 class="mb-0">References and Acknowledgements</h3>
                             <p></p>
                             <ul>
-                                <li>Evan Leong, Jeffery Cai, Steven Sun for being a personal TA for a lost mechE student, despite being students themselves</li>
-                                <li>Jeffery and Steven again for helping me immensely with the complementary filter implementation</li>
-                                <li>Jeffery for filming me trying to drive the car</li>
-                                <li>Lecture slides and code</li>
-                                <li>Farrell for answering my questions</li>
-                                <li><a href="https://nila-n.github.io/Lab1b.html">Nila Narayan's website</a></li>
-                                <li><a href="https://learn.adafruit.com/calibrating-sensors/two-point-calibration">Adafruit forum</a> for two point callibration</li>
-                                <li>ChatGPT for correcting grammar and spelling errors</li>
+                                <li><a href="https://fast.synthghost.com/lab-10-simulated-localization/">Stephan Wagner's website</a></li>
+                                <li><a href="https://pages.github.coecis.cornell.edu/dak267/dak267.github.io/">Daria Kot's website</a></li>
+                                <li><a href="https://nila-n.github.io/Lab10.html">Nila Narayan's website</a></li>
                                 <li><a href="https://startbootstrap.com/theme/resume">Bootstrap template for website</a></li>
                             </ul>
                         </div>
