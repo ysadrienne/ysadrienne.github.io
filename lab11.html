@@ -51,35 +51,68 @@
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
 
-                            <!--Prelab-->
-                            <h3 class="mb-0">Prelab</h3>
-                            <p></p>
-                            <p>Writeup</p>
-                            
                             <!--Task 1-->
                             <h3 class="mb-0">Task 1: Testing localization simulation</h3>
                             <p></p>
-                            <p>This is the final plot from the simulation given in <code>lab11_sim.ipynb</code>.</p>
+                            <p>This is the final plot from the simulation given in <code>lab11_sim.ipynb</code>. Similar to <a href="https://ysadrienne.github.io/lab10.html">lab 10</a>, 
+                                we can see that the belief plot in blue is quite accurate, especially near straight walls.</p>
                             <img src="assets/img/lab11/task1sim.jpg" alt="..." class="center"/>
                             <p></p>
 
                             <!--Task 2-->
                             <h3 class="mb-0">Task 2: Testing localization simulation</h3>
                             <p></p>
-                            <p>Writeup</p>
+                            <p>Below is the <code> START_MAP</code> command which sets the gains increments, and take 18 ToF readings at the initial angle.
+                                I also implemented code to set the inital yaw measured as the reference (0˚) for the rotation, as I noticed the first yaw recorded wasn't always 0 due to drift in the DMP.</p>
+                            <script src="https://gist.github.com/ysadrienne/ad90f51f347e0203341fb1fc609ae0c7.js"></script>
+                            <p>Explanation of the flag <code>MAP_ON</code> can be found in the <a href="https://ysadrienne.github.io/lab9.html">Lab 9 writeup</a>. 
+                                The only difference is that the ToF sensor now records exactly 18 values at each angle, rather than recording however many for 750 ms.</p>
+                            <p>Below is my implementation of <code>perform_observation_loop</code> in in the <code>RealRobot</code> class. When called, function sends the <code>START_MAP</code> command to the robot, 
+                                waits 60 seconds for the robot to map the environment using <code>asyncio.sleep</code>, then send the data collected (time, yaw angle, ToF data) through the <code>SEND_LOC_DATA</code> command. 
+                                I added another sleep for 0.02 seconds to ensure all datapoints are sent without blocks.</p>
+                            <script src="https://gist.github.com/ysadrienne/cfcf9a0fece71cb690524c122b90294e.js"></script>
+                            <p></p>
+                            
+                            <!--Plots-->
+                            <h4 class="mb-0">Plots</h4>
+                            <p>Below are the plots after each rotation, where green represents the ground truth and blue represents the belief calculated with the ToF data collected.</p>
+                            <p class="center">At the origin (0, 0):</p>
+                            <img src="assets/img/lab11/0_0.jpg" alt="..." class="center"/>
+                            <p></p>
+                            <p class="center">At (-3, -2):</p>
+                            <img src="assets/img/lab11/m3_m2.jpg" alt="..." class="center"/>
+                            <img src="assets/img/lab11/m3_m2_bel.jpg" alt="..." class="center"/>
+                            <p></p>
+                            <p class="center">At (5, -3):</p>
+                            <img src="assets/img/lab11/5_m3.jpg" alt="..." class="center"/>
+                            <img src="assets/img/lab11/5_m3_bel.jpg" alt="..." class="center"/>
+                            <p></p>
+                            <p class="center">At (5, 3):</p>
+                            <img src="assets/img/lab11/5_3.jpg" alt="..." class="center"/>
+                            <p></p>
+                            <p class="center">At (0, 3):</p>
+                            <img src="assets/img/lab11/0_3.jpg" alt="..." class="center"/>
+                            <p></p>
+                            <p>Overall, the robot was able to estimate its position with an accuracy of about 1 meter, which isn’t ideal. 
+                                It seemed to perform better at certain spots, like the origin (0, 0) or at (-3, -2), possibly because there were distinct features nearby such as long walls or corners that made it easier for the robot to recognize where it was. 
+                                In particular, at positions like (5, 3) and (5, -3), the estimates were significantly off. I observed that the belief probabilities at these locations were extremely low, indicating a highly dispersed belief distribution and high uncertainty. 
+                                Although I couldn’t pinpoint the exact cause, a possible factor could be that there were several people in the arena testing their robots at the same time, which could have interfered with the ToF readings.
+                                On the other hand, for estimates that were quite good, like at (-3, -2), the probability was close to 1.0.</p>
+                            <p>I had to use Jeffery's robot for lab 9, so here is a video of MY robot doing a 360˚ turn in increments of 20˚ at (5, -3), recording 18 ToF data at each point!</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/lT9y9FIWPG4?si=LIp4UJshIOnzwKAS" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
 
                             <!--References and Acknowledgements-->
                             <h3 class="mb-0">References and Acknowledgements</h3>
                             <p></p>
                             <ul>
-                                <li></li>
-                                <li><a href="https://nila-n.github.io/Lab1b.html">Nila Narayan's website</a></li>
-                                <li><a href="https://learn.adafruit.com/calibrating-sensors/two-point-calibration">Adafruit forum</a> for two point callibration</li>
-                                <li>ChatGPT for correcting grammar and spelling errors</li>
+                                <li><a href="https://pages.github.coecis.cornell.edu/dak267/dak267.github.io/">Daria Kot's website</a></li>
+                                <li>Jeffery Cai for helping me fix my Arduino IDE</li>
                                 <li><a href="https://startbootstrap.com/theme/resume">Bootstrap template for website</a></li>
                             </ul>
                         </div>
-
                     </div>
                 </div>
             </section>
