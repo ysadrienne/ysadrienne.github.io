@@ -51,11 +51,71 @@
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
 
-                            <!--Task 1-->
-                            <h3 class="mb-0">Writeup</h3>
+                            <!--Logic-->
+                            <h3 class="mb-0">Logic</h3>
                             <p></p>
-                            <p>.</p>
-                
+                            <p>For lab 12, my original plan was to have my robot localize at each waypoint, then use the belief data to calculate the yaw and distance to the next point and navigate through the world.
+                                However, given the time it takes for the robot to do a full rotation and the limited accuracy of the localization, I decided wasn't worth the overhead. 
+                            </p>
+                            <p>Next, I attempted to use ToF sensor measurements with extrapolation for position control across all segments. 
+                                My orientation PID is quite accurate thanks to the DMP (and to Stephan Wagner for the best implementation tutorial),
+                                but because of the obscure angles and distance from walls for the first three points, the ToF sensor values were too unreliable, making accurate position control nearly impossible.</p>
+                            <p>As a result, though not ideal, I opted for fully open-loop control for the first three segments, 
+                                using fixed drive times determined through trial and error to get the robot from one point to the next.</p>
+                            <p>For the final four segments, which were situated near a straight wall, ToF readings were much more stable. I was able to apply position PID control as originally intended.</p>
+                            <p>Below are the functions <code>start_path_execution()</code> and <code>handle_path_execution()</code> that are called when the command <code>EXECUTE_PATH</code> is sent.</p>
+                            <script src="https://gist.github.com/ysadrienne/9d98450a3c9f7614ae0553be7e0667ea.js"></script>
+                            <p>First, the angular difference between the current and next waypoint is calculated and assigned to <code>GOAL_ANGLE</code> for orientation control. 
+                                Then, <code>resetyaw()</code> is called to clear any residual data on the DMP and account for an offset if present, and the <code>PID_ANGLE_ON</code> flag is set to true, initiating orientation PID to rotate the robot to the desired heading.
+                                Once the turn is complete, the code checks whether the segment is open-loop or closed-loop. For open-loop segments, the robot drives forward for a fixed duration. 
+                                For closed-loop segments, the <code>PID_ON</code> flag is set to true, triggering position PID control to move the robot toward the next waypoint based on distance feedback.
+                                This process is repeated for each segment until the final waypoint is reached.</p>
+                            <p>Code for <code>PID_ON</code> and <code>PID_ANGLE_ON</code> can be found in the writeup for <a href="https://ysadrienne.github.io/lab6.html">Lab 6: Orientation PID</a>.</p>
+                            <p>In attempts to make my code a bit more concise, I defined three arrays:
+                                <li><code>waypoints[]</code> store all the path points relative to the origin in millimeters.</li> 
+                                <li><code>control[]</code> holds the control values for each segment. These represent the drive time (in ms) for the first three open-loop segments, 
+                                    and the target distance from the wall (in mm) for the remaining closed-loop segments utilizing position PID.
+                                <li><code>openloop[]</code> is a boolean array indicating whether each segment should use open-loop control based on time or closed-loop PID control based on distance.</li></p>
+                            <script src="https://gist.github.com/ysadrienne/c04b6cee96c5f7acb682822daa52e031.js"></script>
+
+                            <!--Testing-->
+                            <h3 class="mb-0">Testing</h3>
+                            <p></p>
+
+                            <p>Here is a video of a valid but failed attempt.</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/HfVivSffFM4?si=en71m6J4X9222Brl" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <p>From this run, it looks like my logic is working fine. The first three segments, which use timed open-loop control, 
+                                turn correctly and head in the right direction, but the robot doesn’t drive forward long enough to hit the waypoints. 
+                                This is mostly just a tuning issue - the delay values need some tweaking, and the robot's behavior can get quite inconsistent depending on how full the battery is.</p>
+                            <p>That said, it still ends up near the right spot. The last few segments use position PID with ToF sensors, so they help the robot correct itself. 
+                                Since the walls are straight and therefore ToF readings are more reliable, the robot can fix the earlier errors as long as it is in the correct orientation, which shows my orientation PID is doing a good job.</p>
+                            <p>Below is a video of the robot hitting the first three waypoints. After the timed open loop control portion, the robot makes an unusual wide turn before going all over the place.</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/sg5XeVeYhpI?si=qD0XTNpQFZBqnt6d" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                            <p></p>
+                            <p>After multiple test runs, I discovered the issue was caused by having tape only on the left wheels.  
+                                I chose to adjust the calibration factor to compensate for the imbalance rather than removing the tape, because the tape helps the robot turn.</p>
+                            <p>Here is a video of my best run, hitting 6 out of the 9 waypoints quite accurately!</p>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/7hAW1i-lSyQ?si=mawfeuUZQAl-nK5h" 
+                            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="center"></iframe>
+                           <p></p>
+                            <p>There was a lot of overshoot with my linear PID, but this was the best I could get it to work before my robot started going out of control 🥲
+                                Because of the instability of the system, I also implemented hard stops during the intermediate position PID segments to prevent the robot from getting stuck or oscillating excessively.
+                                This ended up causing the robot to turn after it crashed into the wall while navigating through waypoints 7 and 8.</p>
+                            <p></p>
+
+                            <!--yay-->
+                            <h5 class="mb-0">🤖yay🤖</h5>
+                            <p>Thank you all for a great semester! Big thanks to Farrell for the engaging lectures, and to the TAs for all the support and open hours.
+                                This was one of the most time consuming classes I took at Cornell (especially since I wasn’t taking it as a requirement, just for funsies) but I’m really glad I did!
+                                I genuinely enjoyed working on both the hardware and software sides of the robot. Very rewarding to see everything I’ve learned across multiple classes come together.
+                            </p>
+
                             <!--References and Acknowledgements-->
                             <h3 class="mb-0">References and Acknowledgements</h3>
                             <p></p>
